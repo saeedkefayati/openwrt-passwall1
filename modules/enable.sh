@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 enable_passwall() {
     echo "Enabling Passwall v1 service..."

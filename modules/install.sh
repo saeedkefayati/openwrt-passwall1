@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 install_passwall() {
     echo "Installing Passwall v1..."

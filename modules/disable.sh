@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 disable_passwall() {
     echo "Disabling Passwall v1 service..."

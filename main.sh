@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Load all modules
 for action in install update uninstall start stop restart enable disable; do

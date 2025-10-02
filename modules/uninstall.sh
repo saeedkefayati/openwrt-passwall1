@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 uninstall_passwall() {
     echo "Uninstalling Passwall v1..."

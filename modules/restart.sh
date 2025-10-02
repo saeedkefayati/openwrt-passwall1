@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 restart_passwall() {
     echo "Restarting Passwall v1 service..."

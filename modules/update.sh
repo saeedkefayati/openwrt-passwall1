@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 update_passwall() {
     echo "Updating Passwall v1..."
