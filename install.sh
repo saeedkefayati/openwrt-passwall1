@@ -16,6 +16,8 @@ if [ ! -d "$REPO_DIR" ]; then
 else
     echo "Repository exists. Pulling latest changes..."
     cd "$REPO_DIR"
+    git reset --hard
+    git clean -fd
     git pull
 fi
 
