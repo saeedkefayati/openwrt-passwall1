@@ -7,6 +7,7 @@ SHORTCUT="/usr/bin/passwall1"
 echo "Step 1: Installing git..."
 opkg update
 opkg install git
+opkg install git-http
 
 echo "Step 2: Clone or update repository..."
 cd /root
