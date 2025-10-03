@@ -20,10 +20,12 @@ else
 fi
 
 cd "$REPO_DIR"
-chmod +x main.sh modules/*.sh utils/*.sh
+
+echo "Step 3: Granting execute permissions to all .sh files..."
+find "$REPO_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 
 if [ ! -f "$SHORTCUT" ]; then
-    echo "Creating shortcut command $SHORTCUT..."
+    echo "Step 4: Creating shortcut command $SHORTCUT..."
     cat <<'EOF' > "$SHORTCUT"
 #!/bin/sh
 REPO_DIR="/root/passwall1"
@@ -35,5 +37,5 @@ EOF
     echo "Shortcut command created. You can now run 'passwall1' from anywhere."
 fi
 
-echo "Launching main script..."
+echo "Step 5: Launching main script..."
 ./main.sh
