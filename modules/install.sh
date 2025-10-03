@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -euo pipefail
+set -e
 
 #---------------------------------------
 # Helper functions
@@ -54,10 +54,9 @@ add_feeds() {
 
   [ -n "${RELEASE:-}" ] || error "RELEASE variable is not set. Run detect_system first."
   [ -n "${ARCH:-}" ] || error "ARCH variable is not set. Run detect_system first."
-
-  FEEDS=("passwall_packages" "passwall_luci")
-
-  for feed in "${FEEDS[@]}"; do
+  
+  FEEDS="passwall_packages passwall_luci"
+  for feed in $FEEDS; do
     if grep -q "$feed" /etc/opkg/customfeeds.conf; then
       info "Feed $feed already exists, skipping."
     else
