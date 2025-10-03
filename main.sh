@@ -48,33 +48,25 @@ echo "-------------------------------------------------"
 show_core_status() {
     echo "              Core Component Status              "
 
-    cores=""
-    for file in /etc/init.d/*; do
-        fname=$(basename "$file")
-        case "$fname" in
-            passwall|xray|hysteria|sing-box)
-                cores="$cores $fname"
-                ;;
-        esac
-    done
+    cores="passwall xray hysteria sing-box"
 
     for proc in $cores; do
-    if [ -x "/usr/bin/$proc" ] || [ -x "/etc/init.d/$proc" ] || command -v "$proc" >/dev/null 2>&1; then
-        if pgrep -x "$proc" >/dev/null 2>&1; then
-            status="${GREEN}Running${NC}"
+        if [ -x "/usr/bin/$proc" ] || [ -x "/etc/init.d/$proc" ] || command -v "$proc" >/dev/null 2>&1; then
+            if pgrep -x "$proc" >/dev/null 2>&1; then
+                status="${GREEN}Running${NC}"
+            else
+                status="${YELLOW}Stopped${NC}"
+            fi
         else
-            status="${YELLOW}Stopped${NC}"
+            status="${RED}Not Installed${NC}"
         fi
-    else
-        status="${RED}Not Installed${NC}"
-    fi
 
-    # Capitalize
-    first_char=$(echo "$proc" | cut -c1 | tr '[:lower:]' '[:upper:]')
-    rest=$(echo "$proc" | cut -c2-)
-    name="$first_char$rest"
+        # Capitalize
+        first_char=$(echo "$proc" | cut -c1 | tr '[:lower:]' '[:upper:]')
+        rest=$(echo "$proc" | cut -c2-)
+        name="$first_char$rest"
 
-    printf "%-12s : %b\n" "$name" "$status"
+        printf "%-12s : %b\n" "$name" "$status"
     done
 
     echo "-------------------------------------------------"
