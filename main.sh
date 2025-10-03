@@ -32,22 +32,18 @@ show_core_status() {
     echo "              Core Components Status              "
     echo "--------------------------------------------------"
 
-
-    cores=()
+    cores=""
     for file in /etc/init.d/*; do
         fname=$(basename "$file")
         case "$fname" in
             passwall|xray|hysteria|sing-box)
-                cores+=("$fname")
+                cores="$cores $fname"
                 ;;
         esac
     done
 
-
-    for proc in "${cores[@]}"; do
-
+    for proc in $cores; do
         if [ -x "/usr/bin/$proc" ] || [ -x "/etc/init.d/$proc" ] || command -v "$proc" >/dev/null 2>&1; then
-
             if pgrep -x "$proc" >/dev/null 2>&1; then
                 status="${GREEN}Running${NC}"
             else
@@ -57,7 +53,10 @@ show_core_status() {
             status="${RED}Not Installed${NC}"
         fi
 
-        name="$(tr '[:lower:]' '[:upper:]' <<< ${proc:0:1})${proc:1}"
+        first_char=$(echo "$proc" | cut -c1 | tr '[:lower:]' '[:upper:]')
+        rest=$(echo "$proc" | cut -c2-)
+        name="$first_char$rest"
+
         printf "%-12s : %s\n" "$name" "$status"
     done
 
@@ -68,7 +67,7 @@ show_core_status() {
 # Load all modules
 # -----------------------------
 for action in install update uninstall start stop restart enable disable; do
-    [ -f "./modules/$action.sh" ] && source "./modules/$action.sh"
+    [ -f "./modules/$action.sh" ] && . "./modules/$action.sh"
 done
 
 # -----------------------------
