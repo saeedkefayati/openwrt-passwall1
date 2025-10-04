@@ -5,7 +5,7 @@
 
 set -e
 
-BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
 . "$BASE_DIR/utils/common.sh"
 . "$BASE_DIR/config.cfg"
 

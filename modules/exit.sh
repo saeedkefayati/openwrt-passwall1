@@ -3,7 +3,7 @@
 # exit.sh - Exit Passwall Main Menu
 #========================================
 
-BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
 . "$BASE_DIR/utils/common.sh"
 
 exit_passwall() {
