@@ -1,6 +1,20 @@
 #!/bin/sh
+#========================================
+# enable.sh - Enable Passwall Service
+#========================================
+
+BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+. "$BASE_DIR/utils/common.sh"
+. "$BASE_DIR/config.cfg"
 
 enable_passwall() {
-    echo "Enabling Passwall v1 service..."
-    /etc/init.d/passwall enable
+    info "Enabling Passwall v1 service..."
+    if [ -x "$PASSWALL_SERVICE" ]; then
+        "$PASSWALL_SERVICE" enable
+        info "Passwall service enabled."
+    else
+        warn "Passwall service not found!"
+    fi
 }
+
+[ "${0##*/}" = "enable.sh" ] && enable_passwall

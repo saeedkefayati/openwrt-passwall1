@@ -1,11 +1,25 @@
 #!/bin/sh
+#========================================
+# uninstall.sh - Uninstall Passwall v1
+#========================================
+
+BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+. "$BASE_DIR/utils/common.sh"
+. "$BASE_DIR/config.cfg"
 
 uninstall_passwall() {
-    echo "Uninstalling Passwall v1..."
-    /etc/init.d/passwall stop 
-    opkg remove luci-app-passwall --autoremove || true
+    info "Stopping Passwall service..."
+    [ -x "$PASSWALL_SERVICE" ] && "$PASSWALL_SERVICE" stop
+
+    info "Removing Passwall packages..."
+    opkg remove "$PASSWALL_PACKAGE" --autoremove || warn "Failed to remove package, maybe not installed"
+
+    info "Removing configuration files..."
     [ -d /etc/config/passwall ] && rm -rf /etc/config/passwall
-    [ -f /usr/bin/passwall1 ] && rm -f /usr/bin/passwall1
-    [ -f /root/passwall1 ] && rm -f /root/passwall1
-    echo "Uninstallation completed successfully."
+    [ -f "$PASSWALL_BIN_DIR" ] && rm -f "$PASSWALL_BIN_DIR"
+    [ -d "$PASSWALL_INSTALL_DIR" ] && rm -rf "$PASSWALL_INSTALL_DIR"
+
+    info "Passwall uninstalled successfully!"
 }
+
+[ "${0##*/}" = "uninstall.sh" ] && uninstall_passwall

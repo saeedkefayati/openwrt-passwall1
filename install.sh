@@ -1,44 +1,46 @@
 #!/bin/sh
+# =============================
+# Passwall v1 Installer
+# =============================
 
-REPO_DIR="/root/passwall1"
+BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+. "$BASE_DIR/utils/common.sh"
+. "$BASE_DIR/config.cfg"
+
 REPO_URL="https://github.com/saeedkefayati/passwall1.git"
-SHORTCUT="/usr/bin/passwall1"
 
-echo "Step 1: Installing git..."
-opkg update
-opkg install git
-opkg install git-http
+info "Step 1: Checking prerequisites..."
+check_command git || error "Git is required. Please install it first."
+check_command git-http || error "git-http is required. Please install it."
 
-echo "Step 2: Clone or update repository..."
+info "Step 2: Clone or update repository..."
 cd /root
-if [ ! -d "$REPO_DIR" ]; then
-    echo "Repository not found. Cloning..."
+if [ ! -d "$PASSWALL_INSTALL_DIR" ]; then
+    info "Repository not found. Cloning..."
     git clone "$REPO_URL"
 else
-    echo "Repository exists. Pulling latest changes..."
-    cd "$REPO_DIR"
+    info "Repository exists. Pulling latest..."
+    cd "$PASSWALL_INSTALL_DIR" || error "Cannot enter $PASSWALL_INSTALL_DIR"
     git reset --hard
     git clean -fd
-    git pull
+    git pull || error "Failed to update repository."
 fi
 
-cd "$REPO_DIR"
+cd "$PASSWALL_INSTALL_DIR" || error "Cannot enter $PASSWALL_INSTALL_DIR"
 
-echo "Step 3: Granting execute permissions to all .sh files..."
-find "$REPO_DIR" -type f -name "*.sh" -exec chmod +x {} \;
+info "Step 3: Grant execute permissions to all .sh files..."
+find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 
-if [ ! -f "$SHORTCUT" ]; then
-    echo "Step 4: Creating shortcut command $SHORTCUT..."
-    cat <<'EOF' > "$SHORTCUT"
+info "Step 4: Create or Update CLI shortcut..."
+cat <<'EOF' > "$SHORTCUT"
 #!/bin/sh
-REPO_DIR="/root/passwall1"
+REPO_DIR="$PASSWALL_BIN_DIR"
 cd "$REPO_DIR"
 git pull
 ./main.sh
 EOF
-    chmod +x "$SHORTCUT"
-    echo "Shortcut command created. You can now run 'passwall1' from anywhere."
-fi
+chmod +x "$PASSWALL_BIN_DIR"
+info "Shortcut ready: run '${PASSWALL_COMMAND}' from anywhere."
 
-echo "Step 5: Launching main script..."
+info "Step 5: Launching main script..."
 ./main.sh
