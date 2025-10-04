@@ -31,14 +31,14 @@ info "Step 3: Grant execute permissions to all .sh files..."
 find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 
 info "Step 4: Create or Update CLI shortcut..."
-cat <<EOF > "$SHORTCUT"
+cat <<EOF > "$PASSWALL_BIN_DIR"
 #!/bin/sh
 REPO_DIR="$PASSWALL_INSTALL_DIR"
 cd "\$REPO_DIR"
 git pull
 ./main.sh
 EOF
-chmod +x "$SHORTCUT"
+chmod +x "$PASSWALL_BIN_DIR"
 
 info "Shortcut ready: run '${PASSWALL_COMMAND}' from anywhere."
 
