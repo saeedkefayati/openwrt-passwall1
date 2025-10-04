@@ -3,17 +3,45 @@
 # Passwall v1 Main Script
 #========================================
 
-
+# ================================
+# Set BASE_DIR based on installation
+# ================================
 BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
+
+# ================================
+# Ensure required files exist
+# ================================
+if [ ! -f "$BASE_DIR/utils/common.sh" ]; then
+    echo "[ERROR] common.sh not found in $BASE_DIR/utils/"
+    exit 1
+fi
+
+if [ ! -f "$BASE_DIR/config.cfg" ]; then
+    echo "[ERROR] config.cfg not found in $BASE_DIR/"
+    exit 1
+fi
+
+# ================================
+# Source common functions and config
+# ================================
 . "$BASE_DIR/utils/common.sh"
 . "$BASE_DIR/config.cfg"
 
+# ================================
 # Load modules
+# ================================
 for action in install update uninstall start stop restart enable disable exit; do
-    [ -f "$BASE_DIR/modules/$action.sh" ] && . "$BASE_DIR/modules/$action.sh"
+    MODULE_FILE="$BASE_DIR/modules/$action.sh"
+    if [ -f "$MODULE_FILE" ]; then
+        . "$MODULE_FILE"
+    else
+        echo "[WARN] Module file not found: $MODULE_FILE"
+    fi
 done
 
+# ================================
 # Main menu loop
+# ================================
 while true; do
     clear_terminal
     show_banner
