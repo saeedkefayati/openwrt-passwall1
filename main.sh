@@ -3,7 +3,7 @@
 # Passwall v1 Main Script
 #========================================
 
-# Use the target install directory as BASE_DIR
+
 BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
 . "$BASE_DIR/utils/common.sh"
 . "$BASE_DIR/config.cfg"

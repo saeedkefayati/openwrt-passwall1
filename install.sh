@@ -3,7 +3,7 @@
 # Passwall v1 Installer
 # =============================
 
-# Use the target install directory as BASE_DIR
+
 BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
 . "$BASE_DIR/utils/common.sh"
 . "$BASE_DIR/config.cfg"
@@ -16,7 +16,7 @@ check_command git
 info "Step 2: Clone or update repository..."
 if [ ! -d "$PASSWALL_INSTALL_DIR" ]; then
     info "Repository not found. Cloning..."
-    git clone "$REPO_URL" "$PASSWALL_INSTALL_DIR" || error "Failed to clone repo"
+    git clone "$REPO_URL" "$PASSWALL_INSTALL_DIR" || error "Failed to clone repository"
 else
     info "Repository exists. Pulling latest..."
     git -C "$PASSWALL_INSTALL_DIR" reset --hard
@@ -30,9 +30,9 @@ find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 info "Step 4: Create or Update CLI shortcut..."
 cat <<EOF > "$PASSWALL_BIN_DIR"
 #!/bin/sh
-cd "$PASSWALL_INSTALL_DIR"
+cd "$PASSWALL_INSTALL_DIR" || exit 1
 git pull
-./main.sh
+exec ./main.sh
 EOF
 chmod +x "$PASSWALL_BIN_DIR"
 
