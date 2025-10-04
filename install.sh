@@ -4,8 +4,8 @@
 # =============================
 
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
-. "$BASE_DIR/config.cfg"
 . "$BASE_DIR/utils/common.sh"
+. "$BASE_DIR/config.cfg"
 
 REPO_URL="https://github.com/saeedkefayati/passwall1.git"
 
@@ -32,8 +32,7 @@ find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 info "Step 4: Create or Update CLI shortcut..."
 cat <<EOF > "$PASSWALL_BIN_DIR"
 #!/bin/sh
-REPO_DIR="$PASSWALL_INSTALL_DIR"
-cd "\$REPO_DIR"
+cd "$PASSWALL_INSTALL_DIR"
 git pull
 ./main.sh
 EOF
@@ -42,5 +41,4 @@ chmod +x "$PASSWALL_BIN_DIR"
 info "Shortcut ready: run '${PASSWALL_COMMAND}' from anywhere."
 
 info "Step 5: Launching main script..."
-cd "$PASSWALL_INSTALL_DIR" || error "Cannot enter $PASSWALL_INSTALL_DIR"
 ./main.sh
