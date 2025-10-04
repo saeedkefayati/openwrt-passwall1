@@ -12,9 +12,9 @@ BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 install_passwall() {
 
     info "Checking required commands..."
-    check_command opkg
-    check_command wget
-    check_command uci
+    check_dependency opkg
+    check_dependency wget
+    check_dependency uci
 
     # Step 1: Add Passwall GPG key
     info "Adding Passwall GPG key..."
