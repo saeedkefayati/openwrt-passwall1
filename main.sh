@@ -10,6 +10,23 @@ YELLOW="\033[1;33m"
 RED="\033[1;31m"
 NC="\033[0m"
 
+# -----------------------------
+# Load Modules
+# -----------------------------
+for action in install update uninstall start stop restart enable disable exit; do
+    [ -f "./modules/$action.sh" ] && . "./modules/$action.sh"
+done
+
+# -----------------------------
+# Load Config
+# -----------------------------
+CONFIG_FILE="./config.cfg"
+if [ -f "$CONFIG_FILE" ]; then
+    . "$CONFIG_FILE"
+else
+    echo "❌ Config file not found!"
+    exit 1
+fi
 
 # -----------------------------
 # Function: Clear Terminal
@@ -47,12 +64,21 @@ echo "-------------------------------------------------"
 # -----------------------------
 show_core_status() {
     echo "              Core Component Status              "
-
-    cores="passwall xray hysteria sing-box"
-
-    for proc in $cores; do
-        if [ -x "/usr/bin/$proc" ] || [ -x "/etc/init.d/$proc" ] || command -v "$proc" >/dev/null 2>&1; then
-            if pgrep -x "$proc" >/dev/null 2>&1; then
+    
+    CONFIG_FILE="./config.cfg"
+    
+    
+    services=$(grep -E '^SERVICE_[0-9]+' "$CONFIG_FILE")
+    
+    while IFS= read -r line; do
+        value=$(echo "$line" | cut -d'=' -f2- | tr -d '"')
+        
+        name=$(echo "$value" | cut -d'|' -f1)
+        path=$(echo "$value" | cut -d'|' -f2)
+        
+        if [ -x "$path" ] || command -v "$path" >/dev/null 2>&1; then
+            base_proc=$(basename "$path")
+            if pgrep -x "$base_proc" >/dev/null 2>&1; then
                 status="${GREEN}Running${NC}"
             else
                 status="${YELLOW}Stopped${NC}"
@@ -60,35 +86,12 @@ show_core_status() {
         else
             status="${RED}Not Installed${NC}"
         fi
-
-        # Capitalize
-        first_char=$(echo "$proc" | cut -c1 | tr '[:lower:]' '[:upper:]')
-        rest=$(echo "$proc" | cut -c2-)
-        name="$first_char$rest"
-
+        
         printf "%-12s : %b\n" "$name" "$status"
-    done
-
+    done <<< "$services"
+    
     echo "-------------------------------------------------"
 }
-
-# -----------------------------
-# Load Modules
-# -----------------------------
-for action in install update uninstall start stop restart enable disable exit; do
-    [ -f "./modules/$action.sh" ] && . "./modules/$action.sh"
-done
-
-# -----------------------------
-# Load Config
-# -----------------------------
-CONFIG_FILE="./config.cfg"
-if [ -f "$CONFIG_FILE" ]; then
-    . "$CONFIG_FILE"
-else
-    echo "❌ Config file not found!"
-    exit 1
-fi
 
 # -----------------------------
 # Main Menu Loop
