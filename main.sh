@@ -73,12 +73,15 @@ show_core_status() {
 }
 
 # -----------------------------
-# Load all modules
+# Load Modules
 # -----------------------------
 for action in install update uninstall start stop restart enable disable exit; do
     [ -f "./modules/$action.sh" ] && . "./modules/$action.sh"
 done
 
+# -----------------------------
+# Load Config
+# -----------------------------
 CONFIG_FILE="./config.cfg"
 if [ -f "$CONFIG_FILE" ]; then
     . "$CONFIG_FILE"
@@ -96,21 +99,23 @@ while true; do
     show_core_status
 
     echo "Please select an operation for Passwall v1:"
-    
-    for key in $(compgen -A variable | grep '^MENU_'); do
-        value="${!key}"
-        menu_text=$(echo "$value" | cut -d'|' -f1)
-        menu_number=$(echo "$key" | grep -oE '[0-9]+')
-        echo "$menu_number) $menu_text"
+
+    i=1
+    while true; do
+        eval entry=\$MENU_${i}
+        [ -z "$entry" ] && break
+
+        menu_text=$(echo "$entry" | cut -d'|' -f1)
+        echo "${i}) $menu_text"
+        i=$((i+1))
     done
 
     printf "Your choice: "
     read op_choice
 
-    menu_var="MENU_${op_choice}"
-
-    if [ -n "${!menu_var}" ]; then
-        action_function=$(echo "${!menu_var}" | cut -d'|' -f2)
+    eval selected=\$MENU_${op_choice}
+    if [ -n "$selected" ]; then
+        action_function=$(echo "$selected" | cut -d'|' -f2)
 
         if command -v "$action_function" >/dev/null 2>&1; then
             $action_function
