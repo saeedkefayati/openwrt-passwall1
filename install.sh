@@ -3,7 +3,8 @@
 # Passwall v1 Installer
 # =============================
 
-BASE_DIR="."
+# Use the target install directory as BASE_DIR
+BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
 . "$BASE_DIR/utils/common.sh"
 . "$BASE_DIR/config.cfg"
 
@@ -18,13 +19,10 @@ if [ ! -d "$PASSWALL_INSTALL_DIR" ]; then
     git clone "$REPO_URL" "$PASSWALL_INSTALL_DIR" || error "Failed to clone repo"
 else
     info "Repository exists. Pulling latest..."
-    cd "$PASSWALL_INSTALL_DIR" || error "Cannot enter $PASSWALL_INSTALL_DIR"
-    git reset --hard
-    git clean -fd
-    git pull || error "Failed to update repository."
+    git -C "$PASSWALL_INSTALL_DIR" reset --hard
+    git -C "$PASSWALL_INSTALL_DIR" clean -fd
+    git -C "$PASSWALL_INSTALL_DIR" pull || error "Failed to update repository."
 fi
-
-cd "$PASSWALL_INSTALL_DIR" || error "Cannot enter $PASSWALL_INSTALL_DIR"
 
 info "Step 3: Grant execute permissions to all .sh files..."
 find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
@@ -41,4 +39,4 @@ chmod +x "$PASSWALL_BIN_DIR"
 info "Shortcut ready: run '${PASSWALL_COMMAND}' from anywhere."
 
 info "Step 5: Launching main script..."
-./main.sh
+sh "$PASSWALL_INSTALL_DIR/main.sh"
