@@ -3,49 +3,46 @@
 # Passwall v1 Installer
 # =============================
 
-
-TARGET_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
+# ================================
+# Variables
+# ================================
+PASSWALL_INSTALL_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
 PASSWALL_BIN_DIR="${PASSWALL_BIN_DIR:-/usr/bin/passwall1}"
 PASSWALL_COMMAND="${PASSWALL_COMMAND:-passwall1}"
 REPO_URL="https://github.com/saeedkefayati/passwall1.git"
-TARGET_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
 
-echo "[INFO] Step 1: Checking prerequisites..."
-command -v git >/dev/null 2>&1 || { echo "[ERROR] git is required"; exit 1; }
-
-echo "[INFO] Step 2: Clone or update repository..."
-if [ ! -d "$TARGET_DIR" ]; then
-    echo "[INFO] Cloning Passwall repository to $TARGET_DIR"
-    git clone "$REPO_URL" "$TARGET_DIR" || { echo "[ERROR] Failed to clone repo"; exit 1; }
+# ================================
+# Step 1: Clone or update repository
+# ================================
+if [ ! -d "$PASSWALL_INSTALL_DIR" ]; then
+    echo "[INFO] Cloning Passwall repository to $PASSWALL_INSTALL_DIR"
+    git clone "$REPO_URL" "$PASSWALL_INSTALL_DIR" || { echo "[ERROR] Failed to clone repo"; exit 1; }
 else
-    echo "[INFO] Updating Passwall repository at $TARGET_DIR"
-    git -C "$TARGET_DIR" reset --hard
-    git -C "$TARGET_DIR" clean -fd
-    git -C "$TARGET_DIR" pull || { echo "[ERROR] Failed to update repo"; exit 1; }
+    echo "[INFO] Updating Passwall repository at $PASSWALL_INSTALL_DIR"
+    git -C "$PASSWALL_INSTALL_DIR" reset --hard
+    git -C "$PASSWALL_INSTALL_DIR" clean -fd
+    git -C "$PASSWALL_INSTALL_DIR" pull || { echo "[ERROR] Failed to update repo"; exit 1; }
 fi
 
-BASE_DIR="$TARGET_DIR"
+# ================================
+# Step 2: Grant execute permissions
+# ================================
+find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 
-if [ ! -f "$BASE_DIR/utils/common.sh" ] || [ ! -f "$BASE_DIR/config.cfg" ]; then
-    echo "[ERROR] Required files not found in $BASE_DIR"
-    exit 1
-fi
-. "$BASE_DIR/utils/common.sh"
-. "$BASE_DIR/config.cfg"
-
-echo "[INFO] Step 3: Grant execute permissions to all .sh files..."
-find "$BASE_DIR" -type f -name "*.sh" -exec chmod +x {} \;
-
-echo "[INFO] Create CLI shortcut..."
+# ================================
+# Step 3: Create CLI shortcut
+# ================================
 cat <<EOF > "$PASSWALL_BIN_DIR"
 #!/bin/sh
-cd "$TARGET_DIR" || exit 1
-git pull
+cd "$PASSWALL_INSTALL_DIR" || exit 1
 exec ./main.sh
 EOF
 chmod +x "$PASSWALL_BIN_DIR"
 
 echo "[INFO] Shortcut ready: run '$PASSWALL_COMMAND' from anywhere."
 
-echo "[INFO] Passwall is ready. Run it anytime using:"
-"$PASSWALL_COMMAND"
+# ================================
+# Step 4: Run main.sh
+# ================================
+echo "[INFO] Launching Passwall..."
+"$PASSWALL_BIN_DIR"

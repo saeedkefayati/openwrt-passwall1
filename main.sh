@@ -34,8 +34,6 @@ for action in install update uninstall start stop restart enable disable exit; d
     MODULE_FILE="$BASE_DIR/modules/$action.sh"
     if [ -f "$MODULE_FILE" ]; then
         . "$MODULE_FILE"
-    else
-        echo "[WARN] Module file not found: $MODULE_FILE"
     fi
 done
 
@@ -63,14 +61,14 @@ while true; do
 
     if [ -n "$selected" ]; then
         action_function=$(echo "$selected" | cut -d'|' -f2)
-        if command -v "$action_function" >/dev/null 2>&1; then
+        if [ "$(type -t $action_function)" = "function" ]; then
             $action_function
         else
-            error "Function '$action_function' is not defined!"
+            echo "[ERROR] Function '$action_function' is not defined!"
             sleep 2
         fi
     else
-        error "Invalid choice! Try again." 0
+        echo "[ERROR] Invalid choice! Try again."
         sleep 2
     fi
 done
