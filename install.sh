@@ -10,8 +10,7 @@ BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_URL="https://github.com/saeedkefayati/passwall1.git"
 
 info "Step 1: Checking prerequisites..."
-check_dependency git true
-check_dependency git-http true
+check_command git
 
 info "Step 2: Clone or update repository..."
 if [ ! -d "$PASSWALL_INSTALL_DIR" ]; then

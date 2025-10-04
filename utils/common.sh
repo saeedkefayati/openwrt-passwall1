@@ -32,29 +32,13 @@ error() {
 #----------------------------------------
 # Check if dependecy exists
 #----------------------------------------
-check_dependency() {
-    local name=$1
-    local pkg=${2:-$name}
-    local auto_install=${3:-false}
+check_command() {
+    local cmd="$1"
 
-    # check command
-    if command -v "$name" >/dev/null 2>&1; then
-        info "Dependency '$name' found (command)."
-        return 0
-    fi
-
-    # check package
-    if opkg list-installed | grep -q "^$pkg "; then
-        info "Dependency '$pkg' found (package)."
-        return 0
-    fi
-
-    # install automatic
-    if [ "$auto_install" = true ]; then
-        info "Dependency '$pkg' not found. Installing..."
-        opkg update && opkg install "$pkg" || error "Failed to install $pkg"
+    if command -v "$cmd" >/dev/null 2>&1; then
+        info "Command '$cmd' found."
     else
-        error "Dependency '$pkg' is missing. Install it with: opkg update && opkg install $pkg"
+        error "Required command '$cmd' not found. Please install it."
     fi
 }
 
