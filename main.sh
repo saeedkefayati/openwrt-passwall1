@@ -64,34 +64,45 @@ echo "-------------------------------------------------"
 # -----------------------------
 show_core_status() {
     echo "              Core Component Status              "
-    
+
     CONFIG_FILE="./config.cfg"
     
-    
-    services=$(grep -E '^SERVICE_[0-9]+' "$CONFIG_FILE")
-    
-    while IFS= read -r line; do
+    if [ ! -f "$CONFIG_FILE" ]; then
+        echo "❌ Config file not found!"
+        echo "-------------------------------------------------"
+        return
+    fi
+
+    grep -E '^SERVICE_[0-9]+' "$CONFIG_FILE" | while IFS= read -r line; do
         value=$(echo "$line" | cut -d'=' -f2- | tr -d '"')
-        
         name=$(echo "$value" | cut -d'|' -f1)
         path=$(echo "$value" | cut -d'|' -f2)
         
         if [ -x "$path" ] || command -v "$path" >/dev/null 2>&1; then
-            base_proc=$(basename "$path")
-            if pgrep -x "$base_proc" >/dev/null 2>&1; then
-                status="${GREEN}Running${NC}"
+            if echo "$path" | grep -q "/init.d/"; then
+                if "$path" status >/dev/null 2>&1; then
+                    status="${GREEN}Running${NC}"
+                else
+                    status="${YELLOW}Stopped${NC}"
+                fi
             else
-                status="${YELLOW}Stopped${NC}"
+                base_proc=$(basename "$path")
+                if pgrep -x "$base_proc" >/dev/null 2>&1; then
+                    status="${GREEN}Running${NC}"
+                else
+                    status="${YELLOW}Stopped${NC}"
+                fi
             fi
         else
             status="${RED}Not Installed${NC}"
         fi
         
         printf "%-12s : %b\n" "$name" "$status"
-    done <<< "$services"
-    
+    done
+
     echo "-------------------------------------------------"
 }
+
 
 # -----------------------------
 # Main Menu Loop
