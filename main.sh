@@ -3,7 +3,7 @@
 # Passwall v1 Main Script
 #========================================
 
-BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+BASE_DIR="$(pwd)"
 . "$BASE_DIR/utils/common.sh"
 . "$BASE_DIR/config.cfg"
 
