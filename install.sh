@@ -38,5 +38,5 @@ chmod +x "$PASSWALL_BIN_DIR"
 
 info "Shortcut ready: run '${PASSWALL_COMMAND}' from anywhere."
 
-info "Step 5: Launching main script..."
-sh "$PASSWALL_INSTALL_DIR/main.sh"
+info "Step 5: Passwall is ready. Run it anytime using:"
+"$PASSWALL_COMMAND"
