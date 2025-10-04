@@ -12,7 +12,7 @@ uninstall_passwall() {
     [ -x "$PASSWALL_SERVICE" ] && "$PASSWALL_SERVICE" stop
 
     info "Removing Passwall packages..."
-    opkg remove "$PASSWALL_PACKAGE" --autoremove || warn "Failed to remove package, maybe not installed"
+    opkg remove "$PASSWALL_PACKAGE" || warn "Failed to remove package, maybe not installed"
 
     info "Removing configuration files..."
     [ -d /etc/config/passwall ] && rm -rf /etc/config/passwall
