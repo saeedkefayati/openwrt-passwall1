@@ -75,9 +75,17 @@ show_core_status() {
 # -----------------------------
 # Load all modules
 # -----------------------------
-for action in install update uninstall start stop restart enable disable; do
+for action in install update uninstall start stop restart enable disable exit; do
     [ -f "./modules/$action.sh" ] && . "./modules/$action.sh"
 done
+
+CONFIG_FILE="./config.cfg"
+if [ -f "$CONFIG_FILE" ]; then
+    . "$CONFIG_FILE"
+else
+    echo "❌ Config file not found!"
+    exit 1
+fi
 
 # -----------------------------
 # Main Menu Loop
@@ -88,28 +96,30 @@ while true; do
     show_core_status
 
     echo "Please select an operation for Passwall v1:"
-    echo "1) Install"
-    echo "2) Update"
-    echo "3) Uninstall"
-    echo "4) Start"
-    echo "5) Stop"
-    echo "6) Restart"
-    echo "7) Enable"
-    echo "8) Disable"
-    echo "9) Exit"
+    
+    for key in $(compgen -A variable | grep '^MENU_'); do
+        value="${!key}"
+        menu_text=$(echo "$value" | cut -d'|' -f1)
+        menu_number=$(echo "$key" | grep -oE '[0-9]+')
+        echo "$menu_number) $menu_text"
+    done
 
-    read -p "Your choice: " op_choice
+    printf "Your choice: "
+    read op_choice
 
-    case $op_choice in
-        1) install_passwall ;;
-        2) update_passwall ;;
-        3) uninstall_passwall ;;
-        4) start_passwall ;;
-        5) stop_passwall ;;
-        6) restart_passwall ;;
-        7) enable_passwall ;;
-        8) disable_passwall ;;
-        9) echo "Exiting..."; exit 0 ;;
-        *) echo -e "${RED}Invalid choice! Please try again.${NC}"; sleep 2 ;;
-    esac
+    menu_var="MENU_${op_choice}"
+
+    if [ -n "${!menu_var}" ]; then
+        action_function=$(echo "${!menu_var}" | cut -d'|' -f2)
+
+        if command -v "$action_function" >/dev/null 2>&1; then
+            $action_function
+        else
+            echo "❌ Function '$action_function' is not defined!"
+            sleep 2
+        fi
+    else
+        echo "❌ Invalid choice! Please try again."
+        sleep 2
+    fi
 done
