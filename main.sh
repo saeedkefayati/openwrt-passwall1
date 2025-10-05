@@ -6,7 +6,7 @@
 # -------------------------------
 # Define base directory
 # -------------------------------
-BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
 
 # -------------------------------
 # Load config
