@@ -14,4 +14,3 @@ restart_passwall() {
     fi
 }
 
-[ "${0##*/}" = "restart.sh" ] && restart_passwall

@@ -9,4 +9,3 @@ exit_passwall() {
     exit 0
 }
 
-[ "${0##*/}" = "exit.sh" ] && exit_passwall

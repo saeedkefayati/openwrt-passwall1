@@ -14,4 +14,3 @@ start_passwall() {
     fi
 }
 
-[ "${0##*/}" = "start.sh" ] && start_passwall

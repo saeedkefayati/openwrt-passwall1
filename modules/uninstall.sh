@@ -19,4 +19,3 @@ uninstall_passwall() {
     success "Passwall uninstalled successfully!"
 }
 
-[ "${0##*/}" = "uninstall.sh" ] && uninstall_passwall

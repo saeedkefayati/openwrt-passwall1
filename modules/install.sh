@@ -60,4 +60,3 @@ install_passwall() {
     success "Passwall v1 installation completed successfully!"
 }
 
-[ "${0##*/}" = "install.sh" ] && install_passwall

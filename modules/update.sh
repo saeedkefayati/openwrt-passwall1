@@ -18,4 +18,3 @@ update_passwall() {
     success "Update completed successfully!"
 }
 
-[ "${0##*/}" = "update.sh" ] && update_passwall

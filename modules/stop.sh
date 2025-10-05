@@ -14,4 +14,3 @@ stop_passwall() {
     fi
 }
 
-[ "${0##*/}" = "stop.sh" ] && stop_passwall
