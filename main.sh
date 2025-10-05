@@ -3,38 +3,26 @@
 # Passwall v1 Main Script
 #========================================
 
-# -------------------------------
-# Define base directory
-# -------------------------------
-SCRIPT_DIR=$(pwd)
+CONFIG_FILE="./config.cfg"
 
-# -------------------------------
-# Load config
-# -------------------------------
-CONFIG_FILE="$SCRIPT_DIR/config.cfg"
-if [ -f "$CONFIG_FILE" ]; then
-    . "$CONFIG_FILE"
-else
-    echo "❌ Config file not found at $CONFIG_FILE"
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "Error: Status script not found."
     exit 1
 fi
+. "$CONFIG_FILE"
 
-# -------------------------------
-# Load common functions
-# -------------------------------
-BASE_DIR="$PASSWALL_INSTALL_DIR"
 
-COMMON_FILE="$BASE_DIR/utils/common.sh"
-if [ -f "$COMMON_FILE" ]; then
-    . "$COMMON_FILE"
-else
-    echo "❌ Common functions file not found at $BASE_DIR/utils/common.sh"
+COMMON_FILE="$PASSWALL_INSTALL_DIR/utils/common.sh"
+if [ ! -f "$COMMON_FILE" ]; then
+    echo "Error: Network script not found."
     exit 1
 fi
+. "$COMMON_FILE"
+
 
 # Load all module scripts
 for action in install update uninstall start stop restart enable disable exit; do
-    MODULE_PATH="$BASE_DIR/modules/$action.sh"
+    MODULE_PATH="$PASSWALL_INSTALL_DIR/modules/$action.sh"
     [ -f "$MODULE_PATH" ] && . "$MODULE_PATH"
 done
 
