@@ -14,7 +14,6 @@ uninstall_passwall() {
     info "Removing configuration files..."
     [ -d /etc/config/passwall ] && rm -rf /etc/config/passwall
     [ -f "$PASSWALL_BIN_DIR" ] && rm -f "$PASSWALL_BIN_DIR"
-    [ -d "$PASSWALL_INSTALL_DIR" ] && rm -rf "$PASSWALL_INSTALL_DIR"
 
     success "Passwall uninstalled successfully!"
 }
