@@ -12,7 +12,7 @@ fi
 . "$CONFIG_FILE"
 
 
-COMMON_FILE="$PASSWALL_INSTALL_DIR/utils/common.sh"
+COMMON_FILE="./utils/common.sh"
 if [ ! -f "$COMMON_FILE" ]; then
     echo "Error: Network script not found."
     exit 1
@@ -22,7 +22,7 @@ fi
 
 # Load all module scripts
 for action in install update uninstall start stop restart enable disable exit; do
-    MODULE_PATH="$PASSWALL_INSTALL_DIR/modules/$action.sh"
+    MODULE_PATH="./modules/$action.sh"
     [ -f "$MODULE_PATH" ] && . "$MODULE_PATH"
 done
 
