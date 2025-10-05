@@ -3,16 +3,20 @@
 # Passwall v1 Main Script
 #========================================
 
-
+# -------------------------------
+# Load all scripts
+# -------------------------------
 . "./config.cfg"
 . "./utils/common.sh"
-
-
-# Load all module scripts
-for action in install update uninstall start stop restart enable disable exit; do
-    MODULE_PATH="./modules/$action.sh"
-    [ -f "$MODULE_PATH" ] && . "$MODULE_PATH"
-done
+. "./modules/install.sh"
+. "./modules/update.sh"
+. "./modules/uninstall.sh"
+. "./modules/start.sh"
+. "./modules/stop.sh"
+. "./modules/restart.sh"
+. "./modules/enable.sh"
+. "./modules/disable.sh"
+. "./modules/exit.sh"
 
 # -------------------------------
 # Main menu loop
