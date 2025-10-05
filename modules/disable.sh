@@ -7,8 +7,8 @@
 disable_passwall() {
     info "Disabling Passwall v1 service..."
 
-    if [ -x "$PASSWALL_SERVICE" ]; then
-        "$PASSWALL_SERVICE" disable
+    if [ -x "$PASSWALL_SERVICE_DIR" ]; then
+        "$PASSWALL_SERVICE_DIR" disable
         success "Passwall service disabled."
     else
         warn "Passwall service not found!"

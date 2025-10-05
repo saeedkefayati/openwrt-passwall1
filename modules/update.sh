@@ -13,7 +13,7 @@ update_passwall() {
     fi
 
     success "Restarting Passwall service..."
-    [ -x "$PASSWALL_SERVICE" ] && "$PASSWALL_SERVICE" restart
+    [ -x "$PASSWALL_SERVICE_DIR" ] && "$PASSWALL_SERVICE_DIR" restart
 
     success "Update completed successfully!"
 }

@@ -6,8 +6,8 @@
 
 stop_passwall() {
     info "Stopping Passwall v1 service..."
-    if [ -x "$PASSWALL_SERVICE" ]; then
-        "$PASSWALL_SERVICE" stop
+    if [ -x "$PASSWALL_SERVICE_DIR" ]; then
+        "$PASSWALL_SERVICE_DIR" stop
         success "Passwall service stopped."
     else
         warn "Passwall service not found!"

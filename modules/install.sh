@@ -54,8 +54,8 @@ install_passwall() {
     info "Enabling and starting Passwall..."
     uci set passwall.@global[0].enabled='1'
     uci commit passwall
-    "$PASSWALL_SERVICE" enable
-    "$PASSWALL_SERVICE" restart
+    "$PASSWALL_SERVICE_DIR" enable
+    "$PASSWALL_SERVICE_DIR" restart
 
     success "Passwall v1 installation completed successfully!"
 }
