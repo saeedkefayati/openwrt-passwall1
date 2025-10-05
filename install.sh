@@ -27,6 +27,7 @@ fi
 # ================================
 # Step 2: Grant execute permissions
 # ================================
+cd "$PASSWALL_INSTALL_DIR" || exit
 find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 
 # ================================
@@ -47,4 +48,4 @@ echo "[INFO] Shortcut ready: run '$PASSWALL_COMMAND' from anywhere."
 # Step 4: Run main.sh
 # ================================
 echo "[INFO] Launching Passwall..."
-"$PASSWALL_BIN_DIR"
+./main.sh
