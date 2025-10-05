@@ -6,9 +6,9 @@
 # ================================
 # Variables
 # ================================
-PASSWALL_INSTALL_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
-PASSWALL_BIN_DIR="${PASSWALL_BIN_DIR:-/usr/bin/passwall1}"
-PASSWALL_COMMAND="${PASSWALL_COMMAND:-passwall1}"
+PASSWALL_INSTALL_DIR="/root/passwall1"
+PASSWALL_BIN_DIR="/usr/bin/passwall1"
+PASSWALL_COMMAND="passwall1"
 REPO_URL="https://github.com/saeedkefayati/passwall1.git"
 
 # ================================
@@ -32,10 +32,12 @@ find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 # ================================
 # Step 3: Create CLI shortcut
 # ================================
-cat <<EOF > "$PASSWALL_BIN_DIR"
+cat <<'EOF' > "$PASSWALL_BIN_DIR"
 #!/bin/sh
-cd "$PASSWALL_INSTALL_DIR" || exit 1
-exec ./main.sh
+REPO_DIR="/root/passwall1"
+cd "$REPO_DIR"
+git pull
+./main.sh
 EOF
 chmod +x "$PASSWALL_BIN_DIR"
 
