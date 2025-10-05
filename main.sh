@@ -208,10 +208,9 @@ while true; do
     printf "Your choice: "
     read op_choice
     eval selected=\$MENU_${op_choice}
-
     if [ -n "$selected" ]; then
         action_function=$(echo "$selected" | cut -d'|' -f2)
-        if [ "$(type -t $action_function)" = "function" ]; then
+        if command -v "$action_function" >/dev/null 2>&1; then
             $action_function
         else
             echo "[ERROR] Function '$action_function' is not defined!"
