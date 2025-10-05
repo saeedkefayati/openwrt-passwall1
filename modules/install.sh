@@ -3,9 +3,6 @@
 # install.sh - Install Passwall v1
 #========================================
 
-set -e
-
-
 install_passwall() {
 
     info "Checking required commands..."
