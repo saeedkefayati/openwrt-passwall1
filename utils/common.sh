@@ -1,11 +1,16 @@
 #!/bin/sh
 #========================================
-# common.sh - Helper functions
+# Common Helper Functions
 #========================================
 
-#----------------------------------------
+# -------------------------------
+# Define base directory
+# -------------------------------
+BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+# -------------------------------
 # Colors
-#----------------------------------------
+# -------------------------------
 USE_COLOR=1
 [ ! -t 1 ] && USE_COLOR=0
 
@@ -16,17 +21,9 @@ NC="\033[0m"
 
 color() { [ "$USE_COLOR" -eq 1 ] && printf "%b" "$1" || true; }
 
-
-#----------------------------------------
-# Log functions
-#----------------------------------------
 info()  { printf "%s[INFO]%s %s\n" "$(color "$GREEN")" "$(color "$NC")" "$*"; }
 warn()  { printf "%s[WARN]%s %s\n" "$(color "$YELLOW")" "$(color "$NC")" "$*"; }
-error() {
-    local exit_now=${2:-1}
-    printf "%s[ERROR]%s %s\n" "$(color "$RED")" "$(color "$NC")" "$1" >&2
-    [ "$exit_now" -eq 1 ] && exit 1
-}
+error() { printf "%s[ERROR]%s %s\n" "$(color "$RED")" "$(color "$NC")" "$1" >&2; [ "${2:-0}" -eq 1 ] && exit 1; }
 
 
 #----------------------------------------
@@ -43,15 +40,15 @@ check_command() {
 }
 
 
-#----------------------------------------
+# -------------------------------
 # Clear terminal
-#----------------------------------------
+# -------------------------------
 clear_terminal() { [ -t 1 ] && (printf "\033c" 2>/dev/null || clear || reset); }
 
 
-#----------------------------------------
+# -------------------------------
 # Show Banner
-#----------------------------------------
+# -------------------------------
 show_banner() {
     printf "%s" "$(color "$GREEN")"
     echo "-------------------------------------------------"
@@ -62,15 +59,15 @@ show_banner() {
     echo "                                                 "
     echo "             PASSWALL v1 MANAGEMENT              "
     echo "-------------------------------------------------"
-    echo "         now you can use '${PASSWALL_COMMAND}' command      "
+    echo "         Now you can use '${PASSWALL_COMMAND}' command      "
     echo "-------------------------------------------------"
     printf "%s" "$(color "$NC")"
 }
 
 
-#----------------------------------------
+# -------------------------------
 # Show Core Status
-#----------------------------------------
+# -------------------------------
 show_core_status() {
     echo "              Core Component Status              "
 
@@ -78,7 +75,7 @@ show_core_status() {
         value=$(echo "$line" | cut -d'=' -f2- | tr -d '"')
         name=$(echo "$value" | cut -d'|' -f1)
         path=$(echo "$value" | cut -d'|' -f2)
-        
+
         if [ -x "$path" ] || command -v "$path" >/dev/null 2>&1; then
             if echo "$path" | grep -q "/init.d/"; then
                 if "$path" status >/dev/null 2>&1; then
@@ -97,7 +94,7 @@ show_core_status() {
         else
             status="${RED}Not Installed${NC}"
         fi
-        
+
         printf "%-12s : %b\n" "$name" "$status"
     done
 

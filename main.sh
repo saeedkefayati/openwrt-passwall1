@@ -3,31 +3,43 @@
 # Passwall v1 Main Script
 #========================================
 
-# ================================
-# Load modules
-# ================================
-for action in install update uninstall start stop restart enable disable exit; do
-    [ -f "./modules/$action.sh" ] && . "./modules/$action.sh"
-done
+# -------------------------------
+# Define base directory
+# -------------------------------
+BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-CONFIG_FILE="./config.cfg"
+# -------------------------------
+# Load config
+# -------------------------------
+CONFIG_FILE="$BASE_DIR/config.cfg"
 if [ -f "$CONFIG_FILE" ]; then
     . "$CONFIG_FILE"
 else
-    echo "❌ Config file not found!"
-    exit 1
-fi
-COMMON_FILE="./utils/common.sh"
-if [ -f "$COMMON_FILE" ]; then
-    . "$COMMON_FILE"
-else
-    echo "❌ Config file not found!"
+    echo "❌ Config file not found at $CONFIG_FILE"
     exit 1
 fi
 
-# ================================
+# -------------------------------
+# Load common functions
+# -------------------------------
+COMMON_FILE="$BASE_DIR/utils/common.sh"
+if [ -f "$COMMON_FILE" ]; then
+    . "$COMMON_FILE"
+else
+    echo "❌ Common functions file not found at $COMMON_FILE"
+    exit 1
+fi
+
+# -------------------------------
+# Load all module scripts
+# -------------------------------
+for action in install update uninstall start stop restart enable disable exit; do
+    [ -f "$BASE_DIR/modules/$action.sh" ] && . "$BASE_DIR/modules/$action.sh"
+done
+
+# -------------------------------
 # Main menu loop
-# ================================
+# -------------------------------
 while true; do
     clear_terminal
     show_banner
