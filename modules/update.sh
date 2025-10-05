@@ -3,8 +3,6 @@
 # update.sh - Update Passwall v1
 #========================================
 
-. "$(dirname "$0")/config.cfg"
-. "$(dirname "$0")/utils/common.sh"
 
 update_passwall() {
     info "Updating Passwall v1..."

@@ -3,7 +3,6 @@
 # Common Helper Functions
 #========================================
 
-. "$(dirname "$0")/config.cfg"
 
 # -------------------------------
 # Colors
@@ -83,7 +82,7 @@ show_banner() {
 show_core_status() {
     echo "              Core Component Status              "
 
-    grep -E '^SERVICE_[0-9]+' "$BASE_DIR/config.cfg" | while IFS= read -r line; do
+    grep -E '^SERVICE_[0-9]+' "./config.cfg" | while IFS= read -r line; do
         value=$(echo "$line" | cut -d'=' -f2- | tr -d '"')
         name=$(echo "$value" | cut -d'|' -f1)
         path=$(echo "$value" | cut -d'|' -f2)

@@ -3,8 +3,6 @@
 # restart.sh - Restart Passwall Service
 #========================================
 
-. "$(dirname "$0")/config.cfg"
-. "$(dirname "$0")/utils/common.sh"
 
 restart_passwall() {
     info "Restarting Passwall v1 service..."

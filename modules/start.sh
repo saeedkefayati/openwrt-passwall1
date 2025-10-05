@@ -3,8 +3,6 @@
 # start.sh - Start Passwall Service
 #========================================
 
-. "$(dirname "$0")/config.cfg"
-. "$(dirname "$0")/utils/common.sh"
 
 start_passwall() {
     info "Starting Passwall v1 service..."

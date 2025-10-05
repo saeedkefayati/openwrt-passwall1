@@ -3,8 +3,6 @@
 # enable.sh - Enable Passwall Service
 #========================================
 
-. "$(dirname "$0")/config.cfg"
-. "$(dirname "$0")/utils/common.sh"
 
 enable_passwall() {
     info "Enabling Passwall v1 service..."

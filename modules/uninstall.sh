@@ -3,8 +3,6 @@
 # uninstall.sh - Uninstall Passwall v1
 #========================================
 
-. "$(dirname "$0")/config.cfg"
-. "$(dirname "$0")/utils/common.sh"
 
 uninstall_passwall() {
     info "Stopping Passwall service..."

@@ -3,8 +3,6 @@
 # disable.sh - Disable Passwall Service
 #========================================
 
-. "$(dirname "$0")/config.cfg"
-. "$(dirname "$0")/utils/common.sh"
 
 disable_passwall() {
     info "Disabling Passwall v1 service..."

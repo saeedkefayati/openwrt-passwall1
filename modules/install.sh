@@ -5,8 +5,6 @@
 
 set -e
 
-. "$(dirname "$0")/config.cfg"
-. "$(dirname "$0")/utils/common.sh"
 
 install_passwall() {
 
