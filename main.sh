@@ -6,17 +6,19 @@
 # -------------------------------
 # Load all scripts
 # -------------------------------
-. "./config.cfg"
-. "./utils/common.sh"
-. "./modules/install.sh"
-. "./modules/update.sh"
-. "./modules/uninstall.sh"
-. "./modules/start.sh"
-. "./modules/stop.sh"
-. "./modules/restart.sh"
-. "./modules/enable.sh"
-. "./modules/disable.sh"
-. "./modules/exit.sh"
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
+. "${SCRIPT_DIR}/config.cfg"
+. "${SCRIPT_DIR}/utils/common.sh"
+. "${SCRIPT_DIR}/modules/install.sh"
+. "${SCRIPT_DIR}/modules/update.sh"
+. "${SCRIPT_DIR}/modules/uninstall.sh"
+. "${SCRIPT_DIR}/modules/start.sh"
+. "${SCRIPT_DIR}/modules/stop.sh"
+. "${SCRIPT_DIR}/modules/restart.sh"
+. "${SCRIPT_DIR}/modules/enable.sh"
+. "${SCRIPT_DIR}/modules/disable.sh"
+. "${SCRIPT_DIR}/modules/exit.sh"
 
 # -------------------------------
 # Main menu loop
