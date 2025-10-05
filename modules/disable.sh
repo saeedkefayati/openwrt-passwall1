@@ -12,7 +12,7 @@ disable_passwall() {
 
     if [ -x "$PASSWALL_SERVICE" ]; then
         "$PASSWALL_SERVICE" disable
-        info "Passwall service disabled."
+        success "Passwall service disabled."
     else
         warn "Passwall service not found!"
     fi

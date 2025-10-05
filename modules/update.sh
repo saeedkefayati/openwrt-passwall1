@@ -15,10 +15,10 @@ update_passwall() {
         return 1
     fi
 
-    info "Restarting Passwall service..."
+    success "Restarting Passwall service..."
     [ -x "$PASSWALL_SERVICE" ] && "$PASSWALL_SERVICE" restart
 
-    info "Update completed successfully!"
+    success "Update completed successfully!"
 }
 
 [ "${0##*/}" = "update.sh" ] && update_passwall

@@ -63,7 +63,7 @@ install_passwall() {
     "$PASSWALL_SERVICE" enable
     "$PASSWALL_SERVICE" restart
 
-    info "Passwall v1 installation completed successfully!"
+    success "Passwall v1 installation completed successfully!"
 }
 
 [ "${0##*/}" = "install.sh" ] && install_passwall

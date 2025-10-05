@@ -19,7 +19,7 @@ uninstall_passwall() {
     [ -f "$PASSWALL_BIN_DIR" ] && rm -f "$PASSWALL_BIN_DIR"
     [ -d "$PASSWALL_INSTALL_DIR" ] && rm -rf "$PASSWALL_INSTALL_DIR"
 
-    info "Passwall uninstalled successfully!"
+    success "Passwall uninstalled successfully!"
 }
 
 [ "${0##*/}" = "uninstall.sh" ] && uninstall_passwall

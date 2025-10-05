@@ -25,23 +25,28 @@ fi
 USE_COLOR=1
 [ ! -t 1 ] && USE_COLOR=0
 
+NC="\033[0m"
 GREEN="\033[1;32m"
 YELLOW="\033[1;33m"
 RED="\033[1;31m"
-NC="\033[0m"
+CYAN="\033[1;36m"
 
 color() { [ "$USE_COLOR" -eq 1 ] && printf "%b" "$1" || true; }
 
-info()  { printf "%s[INFO]%s %s\n" "$(color "$GREEN")" "$(color "$NC")" "$*"; }
-warn()  { printf "%s[WARN]%s %s\n" "$(color "$YELLOW")" "$(color "$NC")" "$*"; }
-error() { printf "%s[ERROR]%s %s\n" "$(color "$RED")" "$(color "$NC")" "$1" >&2; [ "${2:-0}" -eq 1 ] && exit 1; }
+#----------------------------------------
+# Logger
+#----------------------------------------
+info()    { printf "%s\n" "${CYAN}[INFO]${NC} $1"; }
+success() { printf "%s\n" "${GREEN}[OK]${NC} $1"; }
+warn()    { printf "%s\n" "${YELLOW}[WARN]${NC} $1"; }
+error()   { printf "%s\n" "${RED}[ERROR]${NC} $1"; }
 
 
 #----------------------------------------
 # Check if dependecy exists
 #----------------------------------------
 check_command() {
-    local cmd="$1"
+    cmd="$1"
 
     if command -v "$cmd" >/dev/null 2>&1; then
         info "Command '$cmd' found."
@@ -54,7 +59,17 @@ check_command() {
 # -------------------------------
 # Clear terminal
 # -------------------------------
-clear_terminal() { [ -t 1 ] && (printf "\033c" 2>/dev/null || clear || reset); }
+clear_terminal() {
+    if command -v printf >/dev/null 2>&1; then
+        printf "\033c"
+    elif command -v clear >/dev/null 2>&1; then
+        clear
+    elif command -v reset >/dev/null 2>&1; then
+        reset
+    else
+        error "No method to clear terminal available"
+    fi
+}
 
 
 # -------------------------------
