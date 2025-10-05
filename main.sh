@@ -6,12 +6,12 @@
 # -------------------------------
 # Define base directory
 # -------------------------------
-BASE_DIR=$(pwd)
+SCRIPT_DIR=$(pwd)
 
 # -------------------------------
 # Load config
 # -------------------------------
-CONFIG_FILE="$BASE_DIR/config.cfg"
+CONFIG_FILE="$SCRIPT_DIR/config.cfg"
 if [ -f "$CONFIG_FILE" ]; then
     . "$CONFIG_FILE"
 else
@@ -22,19 +22,20 @@ fi
 # -------------------------------
 # Load common functions
 # -------------------------------
+BASE_DIR="$PASSWALL_INSTALL_DIR"
+
 COMMON_FILE="$BASE_DIR/utils/common.sh"
 if [ -f "$COMMON_FILE" ]; then
     . "$COMMON_FILE"
 else
-    echo "❌ Common functions file not found at $COMMON_FILE"
+    echo "❌ Common functions file not found at $BASE_DIR/utils/common.sh"
     exit 1
 fi
 
-# -------------------------------
 # Load all module scripts
-# -------------------------------
 for action in install update uninstall start stop restart enable disable exit; do
-    [ -f "$BASE_DIR/modules/$action.sh" ] && . "$BASE_DIR/modules/$action.sh"
+    MODULE_PATH="$BASE_DIR/modules/$action.sh"
+    [ -f "$MODULE_PATH" ] && . "$MODULE_PATH"
 done
 
 # -------------------------------
