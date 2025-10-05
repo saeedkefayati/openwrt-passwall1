@@ -3,9 +3,8 @@
 # stop.sh - Stop Passwall Service
 #========================================
 
-BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
-. "$BASE_DIR/utils/common.sh"
-. "$BASE_DIR/config.cfg"
+. "$(dirname "$0")/config.cfg"
+. "$(dirname "$0")/utils/common.sh"
 
 stop_passwall() {
     info "Stopping Passwall v1 service..."

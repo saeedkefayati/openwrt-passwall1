@@ -3,9 +3,8 @@
 # update.sh - Update Passwall v1
 #========================================
 
-BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
-. "$BASE_DIR/utils/common.sh"
-. "$BASE_DIR/config.cfg"
+. "$(dirname "$0")/config.cfg"
+. "$(dirname "$0")/utils/common.sh"
 
 update_passwall() {
     info "Updating Passwall v1..."

@@ -3,21 +3,9 @@
 # Passwall v1 Main Script
 #========================================
 
-CONFIG_FILE="./config.cfg"
 
-if [ ! -f "$CONFIG_FILE" ]; then
-    echo "Error: Status script not found."
-    exit 1
-fi
-. "$CONFIG_FILE"
-
-
-COMMON_FILE="./utils/common.sh"
-if [ ! -f "$COMMON_FILE" ]; then
-    echo "Error: Network script not found."
-    exit 1
-fi
-. "$COMMON_FILE"
+. "./config.cfg"
+. "./utils/common.sh"
 
 
 # Load all module scripts
