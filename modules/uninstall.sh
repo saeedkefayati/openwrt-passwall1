@@ -7,7 +7,12 @@
 uninstall_passwall() {
     # Step 1: Stopping Passwall service
     info "Stopping Passwall service..."
-    [ -x "$PASSWALL_SERVICE_DIR" ] && "$PASSWALL_SERVICE_DIR" stop
+    if [ -x "$PASSWALL_SERVICE_DIR" ]; then
+        "$PASSWALL_SERVICE_DIR" stop
+        success "Passwall service stopped."
+    else
+        warn "Passwall service not found!"
+    fi
 
     # Step 2: Removing Passwall packages
     info "Removing Passwall packages..."
@@ -27,8 +32,18 @@ uninstall_passwall() {
 
     # Step 4: Remove configuration files
     info "Removing configuration files..."
-    [ -d "$PASSWALL_SERVICE_DIR" ] && rm -rf "$PASSWALL_SERVICE_DIR"
-    [ -f "$PASSWALL_BIN_DIR" ] && rm -f "$PASSWALL_BIN_DIR"
+    if [ -d "$PASSWALL_SERVICE_DIR" ]; then
+        rm -rf "$PASSWALL_SERVICE_DIR"
+        success "Passwall $PASSWALL_SERVICE_DIR removed."
+    else
+        warn "Passwall $PASSWALL_SERVICE_DIR not found!"
+    fi
+    if [ -f "$PASSWALL_BIN_DIR" ]; then
+        rm -f "$PASSWALL_BIN_DIR"
+        success "Passwall $PASSWALL_BIN_DIR removed."
+    else
+        warn "Passwall $PASSWALL_BIN_DIR not found!"
+    fi
 
     # Step 5: Update package lists
     info "Updating package lists..."
