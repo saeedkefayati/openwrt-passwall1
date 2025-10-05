@@ -21,10 +21,10 @@ color() { [ "$USE_COLOR" -eq 1 ] && printf "%b" "$1" || true; }
 #----------------------------------------
 # Logger
 #----------------------------------------
-info()    { printf "%s\n" "${CYAN}[INFO]${NC} $1"; }
-success() { printf "%s\n" "${GREEN}[OK]${NC} $1"; }
-warn()    { printf "%s\n" "${YELLOW}[WARN]${NC} $1"; }
-error()   { printf "%s\n" "${RED}[ERROR]${NC} $1"; }
+info()    { printf "%b\n" "${CYAN}[INFO]${NC} $1"; }
+success() { printf "%b\n" "${GREEN}[OK]${NC} $1"; }
+warn()    { printf "%b\n" "${YELLOW}[WARN]${NC} $1"; }
+error()   { printf "%b\n" "${RED}[ERROR]${NC} $1"; }
 
 
 #----------------------------------------
