@@ -9,6 +9,17 @@
 BASE_DIR="${PASSWALL_INSTALL_DIR:-/root/passwall1}"
 
 # -------------------------------
+# Load config
+# -------------------------------
+CONFIG_FILE="$BASE_DIR/config.cfg"
+if [ -f "$CONFIG_FILE" ]; then
+    . "$CONFIG_FILE"
+else
+    echo "❌ Config file not found at $CONFIG_FILE"
+    exit 1
+fi
+
+# -------------------------------
 # Colors
 # -------------------------------
 USE_COLOR=1
