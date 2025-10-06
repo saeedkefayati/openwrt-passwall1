@@ -35,7 +35,7 @@ find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 # ================================
 cat <<'EOF' > "$PASSWALL_BIN_DIR"
 #!/bin/sh
-REPO_DIR="/root/passwall1"
+REPO_DIR="$PASSWALL_INSTALL_DIR"
 cd "$REPO_DIR"
 git pull
 ./main.sh
