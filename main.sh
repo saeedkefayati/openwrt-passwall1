@@ -38,6 +38,7 @@ while true; do
         i=$((i+1))
     done
 
+    printf "%s" "$(color "$GREEN")"
     printf "Your choice: "
     read op_choice
     eval selected=\$MENU_${op_choice}
