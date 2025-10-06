@@ -62,6 +62,7 @@ clear_terminal() {
 # -------------------------------
 show_banner() {
     cat ./banner.txt
+    echo ""
     echo "             '$(echo "$PASSWALL_COMMAND" | tr '[:lower:]' '[:upper:]')' MANAGEMENT              "
     echo "         Now you can use '${PASSWALL_COMMAND}' command      "
     echo ""
@@ -74,7 +75,7 @@ show_banner() {
 # -------------------------------
 show_core_status() {
     echo "              Core Component Status              "
-
+    echo ""
     grep -E '^SERVICE_[0-9]+' "./config.cfg" | while IFS= read -r line; do
         value=$(echo "$line" | cut -d'=' -f2- | tr -d '"')
         name=$(echo "$value" | cut -d'|' -f1)
