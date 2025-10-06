@@ -33,10 +33,10 @@ find "$PASSWALL_INSTALL_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 # ================================
 # Step 3: Create CLI shortcut
 # ================================
-cat <<'EOF' > "$PASSWALL_BIN_DIR"
+cat <<EOF > "$PASSWALL_BIN_DIR"
 #!/bin/sh
 REPO_DIR="$PASSWALL_INSTALL_DIR"
-cd "$REPO_DIR"
+cd "\$REPO_DIR"
 git pull
 ./main.sh
 EOF
