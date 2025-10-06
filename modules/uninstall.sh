@@ -50,5 +50,6 @@ uninstall_passwall() {
     opkg update || error "Failed to update package lists"
 
     success "Passwall v1 uninstalled successfully!"
+    sleep 3
 }
 

@@ -58,5 +58,6 @@ install_passwall() {
     "$PASSWALL_SERVICE_DIR" restart
 
     success "Passwall v1 installation completed successfully!"
+    sleep 3
 }
 

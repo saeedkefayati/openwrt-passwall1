@@ -12,5 +12,6 @@ stop_passwall() {
     else
         warn "Passwall service not found!"
     fi
+    sleep 3
 }
 

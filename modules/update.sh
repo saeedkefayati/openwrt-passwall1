@@ -16,5 +16,6 @@ update_passwall() {
     [ -x "$PASSWALL_SERVICE_DIR" ] && "$PASSWALL_SERVICE_DIR" restart
 
     success "Update completed successfully!"
+    sleep 3
 }
 
