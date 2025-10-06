@@ -72,7 +72,6 @@ show_banner() {
     echo "-------------------------------------------------"
     echo "         Now you can use '${PASSWALL_COMMAND}' command      "
     echo "-------------------------------------------------"
-    printf "%s" "$(color "$NC")"
 }
 
 
