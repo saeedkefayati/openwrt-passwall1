@@ -28,7 +28,7 @@ while true; do
     show_banner
     show_core_status
 
-    printf "Select an operation for Passwall v1:"
+    echo "Select an operation for Passwall v1:"
     i=1
     while true; do
         eval entry=\$MENU_${i}
