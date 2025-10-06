@@ -61,7 +61,7 @@ clear_terminal() {
 # Show Banner
 # -------------------------------
 show_banner() {
-    cat ./utils/banner.txt
+    cat ./banner.txt
     echo "             '$(echo "$PASSWALL_COMMAND" | tr '[:lower:]' '[:upper:]')' MANAGEMENT              "
     echo "         Now you can use '${PASSWALL_COMMAND}' command      "
     echo ""
