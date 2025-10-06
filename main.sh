@@ -47,10 +47,10 @@ while true; do
             $action_function
         else
             echo "[ERROR] Function '$action_function' is not defined!"
-            sleep 2
+            sleep 1.5
         fi
     else
         echo "[ERROR] Invalid choice! Try again."
-        sleep 2
+        sleep 1.5
     fi
 done
