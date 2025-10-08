@@ -32,11 +32,7 @@ this is repository for all action in passwall1 service
 
 1. Install Dependencies<br/>
 ```bash
-  opkg install git
-```
-
-```bash
-  opkg install git-http
+  opkg install git git-http
 ```
 
 
