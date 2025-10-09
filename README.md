@@ -4,10 +4,10 @@
 this is repository for all action in passwall1 service
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-![GitHub last commit](https://img.shields.io/github/last-commit/saeedkefayati/free-internet)
-![GitHub top language](https://img.shields.io/github/languages/top/saeedkefayati/free-internet)
-![GitHub repo size](https://img.shields.io/github/repo-size/saeedkefayati/free-internet)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/saeedkefayati/free-internet)
+![GitHub last commit](https://img.shields.io/github/last-commit/saeedkefayati/openwrt-passwall1)
+![GitHub top language](https://img.shields.io/github/languages/top/saeedkefayati/openwrt-passwall1)
+![GitHub repo size](https://img.shields.io/github/repo-size/saeedkefayati/openwrt-passwall1)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/saeedkefayati/openwrt-passwall1)
 
 
 <figure>
@@ -40,22 +40,22 @@ this is repository for all action in passwall1 service
 2. Usage with this command<br/>
 - Github:
 ```bash
-sh <(wget -qO- https://raw.githubusercontent.com/saeedkefayati/passwall1/main/install.sh)
+sh <(wget -qO- https://raw.githubusercontent.com/saeedkefayati/openwrt-passwall1/main/install.sh)
 ```
 
 - Githack:
 ```bash
-sh <(wget -qO- https://raw.githack.com/saeedkefayati/passwall1/main/install.sh)
+sh <(wget -qO- https://raw.githack.com/saeedkefayati/openwrt-passwall1/main/install.sh)
 ```
 
 - jsdelivr CDN:
 ```bash
-sh <(wget -qO- https://cdn.jsdelivr.net/gh/saeedkefayati/passwall1@main/install.sh)
+sh <(wget -qO- https://cdn.jsdelivr.net/gh/saeedkefayati/openwrt-passwall1@main/install.sh)
 ```
 
 - statically CDN
 ```bash
-sh <(wget -qO- https://cdn.statically.io/gh/saeedkefayati/passwall1/main/install.sh)
+sh <(wget -qO- https://cdn.statically.io/gh/saeedkefayati/openwrt-passwall1/main/install.sh)
 ```
 
 <br/>
@@ -67,7 +67,7 @@ sh <(wget -qO- https://cdn.statically.io/gh/saeedkefayati/passwall1/main/install
   cd /root
 ```
 ```bash
-  wget -O passwall1.zip https://github.com/saeedkefayati/passwall1/archive/refs/heads/main.zip
+  wget -O passwall1.zip https://github.com/saeedkefayati/openwrt-passwall1/archive/refs/heads/main.zip
 ```
 ```bash
   opkg install unzip

@@ -9,7 +9,7 @@
 PASSWALL_INSTALL_DIR="/root/free-internet/passwall1"
 PASSWALL_BIN_DIR="/usr/bin/passwall1"
 PASSWALL_COMMAND="passwall1"
-REPO_URL="https://github.com/saeedkefayati/passwall1.git"
+REPO_URL="https://github.com/saeedkefayati/openwrt-passwall1.git"
 
 # ================================
 # Step 1: Clone or update repository
