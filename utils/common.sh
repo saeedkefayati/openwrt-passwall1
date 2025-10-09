@@ -111,12 +111,18 @@ show_core_status() {
 passwall_service() {
     action="$1" # 'start', 'stop', 'restart', etc.
 
-    if [ -x "$PASSWALL_SERVICE_DIR" ]; then
-        mkdir -p /tmp/etc/passwall
-
-        "$PASSWALL_SERVICE_DIR" "$action"
-        # success "Passwall service $action."
-    else
+    if ! [ -x "$PASSWALL_SERVICE_DIR" ]; then
         warn "Passwall service not found!"
+        return 1 
+    fi
+
+    mkdir -p /tmp/etc/passwall
+
+    if "$PASSWALL_SERVICE_DIR" "$action"; then
+        success "Passwall service '$action' command completed successfully."
+        return 0
+    else
+        error "Passwall service '$action' command failed."
+        return 1
     fi
 }

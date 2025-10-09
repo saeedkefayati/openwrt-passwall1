@@ -55,9 +55,7 @@ install_passwall() {
     uci set passwall.@global[0].enabled='1'
     uci commit passwall
     passwall_service enable
-    success "Passwall service enabled."
     passwall_service restart
-    success "Passwall service restarted."
 
     success "Passwall v1 installation completed successfully!"
     sleep 3

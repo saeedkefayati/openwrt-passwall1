@@ -14,7 +14,6 @@ update_passwall() {
 
     info "Updating Passwall v1 service..."
     passwall_service restart
-    success "Passwall service restarted."
 
     success "Update completed successfully!"
     sleep 3
