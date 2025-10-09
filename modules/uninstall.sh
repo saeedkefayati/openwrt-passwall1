@@ -19,7 +19,7 @@ uninstall_passwall() {
 
     for feed in $FEEDS; do
         if grep -q "$feed" /etc/opkg/customfeeds.conf; then
-            info "Removing feed $feed"
+            success "Removing feed $feed"
             sed -i "/$feed/d" /etc/opkg/customfeeds.conf
         else
             warn "Feed $feed not found in customfeeds.conf"
