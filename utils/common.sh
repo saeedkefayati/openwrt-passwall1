@@ -79,7 +79,9 @@ show_openwrt_info() {
     printf "%-12s : %b\n" "RELEASE" "$RELEASE"
     printf "%-12s : %b\n" "MAJOR" "$RELEASE_MAJOR"
     printf "%-12s : %b\n" "ARCH" "$ARCH"
+    printf "%-12s : %b\n" "ARCH_TYPE" "$ARCH_TYPE"
     printf "%-12s : %b\n" "REVISION" "$REVISION"
+    printf "%-12s : %b\n" "BRANCH" "$BRANCH"
     echo "-----------------------------------------------------"
 }
 
@@ -139,12 +141,16 @@ passwall_service() {
 # Get OpenWrt Information
 # -------------------------------
 get_openwrt_info() {
-    [ -f /etc/openwrt_release ] || { error "/etc/openwrt_release not found!"; return 1; }
+    file="/etc/openwrt_release"
 
-    RELEASE=$(grep DISTRIB_RELEASE /etc/openwrt_release | cut -d"'" -f2)
-    REVISION=$(grep DISTRIB_REVISION /etc/openwrt_release | cut -d"'" -f2)
-    ARCH=$(grep DISTRIB_ARCH /etc/openwrt_release | cut -d"'" -f2)
+    
+    [ -f "$file" ] || { echo "$file not found!"; return 1; }
 
+    RELEASE=$(grep DISTRIB_RELEASE "$file" 2>/dev/null | cut -d"'" -f2)
+    REVISION=$(grep DISTRIB_REVISION "$file" 2>/dev/null | cut -d"'" -f2)
+    ARCH=$(grep DISTRIB_ARCH "$file" 2>/dev/null | cut -d"'" -f2)
+
+    
     RELEASE_MAJOR=$(echo "$RELEASE" | cut -d'.' -f1,2)
 
     if [ -z "$RELEASE" ]; then
@@ -159,7 +165,27 @@ get_openwrt_info() {
         RELEASE_TYPE="STABLE"
     fi
 
-    export RELEASE_TYPE RELEASE RELEASE_MAJOR ARCH REVISION
+
+    if [ -n "$RELEASE_MAJOR" ]; then
+        BRANCH="openwrt-$RELEASE_MAJOR"
+    else
+        BRANCH="UNKNOWN"
+    fi
+
+
+    case "$ARCH" in
+        *mips* ) ARCH_TYPE="MIPS" ;;
+        *arm_cortex*|*arm_arm* ) ARCH_TYPE="ARM32" ;;
+        *aarch64* ) ARCH_TYPE="ARM64" ;;
+        *x86* ) ARCH_TYPE="x86" ;;
+        *powerpc* ) ARCH_TYPE="PowerPC" ;;
+        *riscv* ) ARCH_TYPE="RISC-V" ;;
+        *loongarch* ) ARCH_TYPE="LoongArch" ;;
+        * ) ARCH_TYPE="UNKNOWN" ;;
+    esac
+
+
+    export RELEASE_TYPE RELEASE RELEASE_MAJOR ARCH ARCH_TYPE REVISION BRANCH
 }
 
 
