@@ -94,9 +94,3 @@ sh <(wget -qO- https://cdn.statically.io/gh/saeedkefayati/passwall1/main/install
 ```bash
   echo '#!/bin/sh' > /usr/bin/passwall1 && echo 'cd /root/passwall1 && ./main.sh' >> /usr/bin/passwall1 && chmod +x /usr/bin/passwall1
 ```
-
-<br/>
-
-## Authors
-
-- [@saeedkefayati](https://www.github.com/saeedkefayati)
