@@ -37,6 +37,7 @@ check_command() {
         info "Command '$cmd' found."
     else
         error "Required command '$cmd' not found. Please install it."
+        return 1
     fi
 }
 
@@ -64,6 +65,20 @@ show_banner() {
     cat ./banner.txt
     echo ""
     echo "         Now you can use '${PASSWALL_COMMAND}' command      "
+    echo "-----------------------------------------------------"
+}
+
+
+# -------------------------------
+# Show OpenWrt Information
+# -------------------------------
+show_openwrt_info() {
+    echo "             OpenWrt System Information             "
+    echo ""
+    printf "%-12s : %b\n" "RELEASE_TYPE" "$RELEASE_TYPE"
+    printf "%-12s : %b\n" "RELEASE" "$RELEASE"
+    printf "%-12s : %b\n" "ARCH" "$ARCH"
+    printf "%-12s : %b\n" "REVISION" "$REVISION"
     echo "-----------------------------------------------------"
 }
 
@@ -116,4 +131,66 @@ passwall_service() {
         error "Passwall service '$action' command failed."
         return 1
     fi
+}
+
+
+# -------------------------------
+# Get OpenWrt Information
+# -------------------------------
+get_openwrt_info() {
+    [ -f /etc/openwrt_release ] || { error "/etc/openwrt_release not found!"; return 1; }
+
+    RELEASE=$(grep DISTRIB_RELEASE /etc/openwrt_release | cut -d"'" -f2)
+    REVISION=$(grep DISTRIB_REVISION /etc/openwrt_release | cut -d"'" -f2)
+    ARCH=$(grep DISTRIB_ARCH /etc/openwrt_release | cut -d"'" -f2)
+
+    if [ -z "$RELEASE" ]; then
+        RELEASE_TYPE="UNKNOWN"
+    elif echo "$RELEASE" | grep -iq "snapshot"; then
+        RELEASE_TYPE="SNAPSHOT"
+    elif echo "$RELEASE" | grep -iq "rc"; then
+        RELEASE_TYPE="RC"
+    elif echo "$RELEASE" | grep -iq "beta"; then
+        RELEASE_TYPE="BETA"
+    else
+        RELEASE_TYPE="STABLE"
+    fi
+
+    export RELEASE_TYPE RELEASE ARCH REVISION
+}
+
+
+# -------------------------------
+# Passwall Add Feeds
+# -------------------------------
+add_passwall_feeds() {
+    [ -z "$RELEASE" ] && { error "RELEASE not set! Run get_openwrt_info first."; return 1; }
+    [ -z "$ARCH" ] && { error "ARCH not set! Run get_openwrt_info first."; return 1; }
+    [ -z "$RELEASE_TYPE" ] && { error "RELEASE_TYPE not set! Run get_openwrt_info first."; return 1; }
+
+    FEEDS="passwall_packages passwall_luci"
+
+    case "$RELEASE_TYPE" in
+        SNAPSHOT)
+            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/snapshots/packages-$RELEASE/$ARCH"
+            ;;
+        RC|BETA|STABLE)
+            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$RELEASE/$ARCH"
+            ;;
+        *)
+            warn "Unknown RELEASE_TYPE, defaulting to releases path"
+            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$RELEASE/$ARCH"
+            ;;
+    esac
+
+    info "Adding Passwall repositories for $RELEASE_TYPE ($RELEASE/$ARCH)..."
+
+    for feed in $FEEDS; do
+        if grep -q "$feed" /etc/opkg/customfeeds.conf 2>/dev/null; then
+            info "Feed $feed already exists, skipping."
+        else
+            echo "src/gz $feed $BASE_URL/$feed" >> /etc/opkg/customfeeds.conf
+            success "Added feed: $feed"
+        fi
+    done
 }

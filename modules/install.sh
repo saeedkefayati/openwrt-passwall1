@@ -16,29 +16,19 @@ install_passwall() {
         wget -O /tmp/passwall.pub https://master.dl.sourceforge.net/project/openwrt-passwall-build/passwall.pub
         opkg-key add /tmp/passwall.pub
         rm /tmp/passwall.pub
+        success "GPG key added successfully."
     else
         info "GPG key already exists, skipping."
     fi
 
-    # Step 2: Detect release & architecture
+    # Step 2: Detect OpenWrt info
     info "Detecting OpenWrt release and architecture..."
-    [ -f /etc/openwrt_release ] || { error "/etc/openwrt_release not found!"; return 1; }
-    . /etc/openwrt_release
-    RELEASE=${DISTRIB_RELEASE%.*}
-    ARCH=$DISTRIB_ARCH
-    info "Detected OpenWrt $RELEASE on $ARCH"
+    get_openwrt_info
+    info "Detected OpenWrt $RELEASE_TYPE ($RELEASE) on $ARCH"
 
     # Step 3: Add Passwall repositories
     info "Adding Passwall repositories..."
-    FEEDS="passwall_packages passwall_luci"
-    for feed in $FEEDS; do
-        if grep -q "$feed" /etc/opkg/customfeeds.conf; then
-            info "Feed $feed already exists, skipping."
-        else
-            echo "src/gz $feed https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$RELEASE/$ARCH/$feed" >> /etc/opkg/customfeeds.conf
-            info "Added feed: $feed"
-        fi
-    done
+    add_passwall_feeds
 
     # Step 4: Update package lists
     info "Updating package lists..."

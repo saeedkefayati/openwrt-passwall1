@@ -48,4 +48,4 @@ echo "[INFO] Shortcut ready: run '$PASSWALL_COMMAND' from anywhere."
 # Step 4: Run main.sh
 # ================================
 echo "[INFO] Launching Passwall..."
-./main.sh
+"$PASSWALL_INSTALL_DIR/main.sh"

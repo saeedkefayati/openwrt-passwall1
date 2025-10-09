@@ -21,11 +21,17 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 . "${SCRIPT_DIR}/modules/exit.sh"
 
 # -------------------------------
+# Detect OpenWrt info at startup
+# -------------------------------
+get_openwrt_info
+
+# -------------------------------
 # Main menu loop
 # -------------------------------
 while true; do
     clear_terminal
     show_banner
+    show_openwrt_info
     show_core_status
 
     echo "Select an operation for Passwall v1:"
@@ -46,11 +52,11 @@ while true; do
         if command -v "$action_function" >/dev/null 2>&1; then
             $action_function
         else
-            echo "[ERROR] Function '$action_function' is not defined!"
+            error "Function '$action_function' is not defined!"
             sleep 2
         fi
     else
-        echo "[ERROR] Invalid choice! Try again."
+        warn "Invalid choice! Try again."
         sleep 2
     fi
 done

@@ -8,11 +8,11 @@ uninstall_passwall() {
     info "Stopping Passwall service..."
     passwall_service stop
 
-    # Step 2: Remove the Passwall package (suppressing errors)
-    info "Removing Passwall packages..."
+    # Step 2: Remove the Passwall package
+    info "Removing Passwall package..."
     opkg remove "$PASSWALL_PACKAGE" >/dev/null 2>&1 || warn "Package not found or failed to remove."
-    
-    # Step 3: Remove the software repositories
+
+    # Step 3: Remove feeds
     info "Removing Passwall repositories..."
     FEEDS="passwall_packages passwall_luci"
     for feed in $FEEDS; do
@@ -22,21 +22,13 @@ uninstall_passwall() {
         fi
     done
 
-    # Step 4: Remove files created by this script
+    # Step 4: Remove files and directories
     info "Removing custom script files..."
-    if [ -f "$PASSWALL_BIN_DIR" ]; then
-        rm -f "$PASSWALL_BIN_DIR"
-        success "Removed command: $PASSWALL_BIN_DIR"
-    fi
-    
-    # Step 5: Completely remove the main script directory
+    [ -f "$PASSWALL_BIN_DIR" ] && rm -f "$PASSWALL_BIN_DIR" && success "Removed command: $PASSWALL_BIN_DIR"
     info "Removing main script directory..."
-    if [ -d "$PASSWALL_INSTALL_DIR" ]; then
-        rm -rf "$PASSWALL_INSTALL_DIR"
-        success "Removed directory: $PASSWALL_INSTALL_DIR"
-    fi
+    [ -d "$PASSWALL_INSTALL_DIR" ] && rm -rf "$PASSWALL_INSTALL_DIR" && success "Removed directory: $PASSWALL_INSTALL_DIR"
 
-    # Step 6: Update package lists
+    # Step 5: Update package lists
     info "Updating package lists..."
     opkg update
 
