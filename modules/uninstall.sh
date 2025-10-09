@@ -25,8 +25,8 @@ uninstall_passwall() {
     # Step 4: Remove files and directories
     info "Removing custom script files..."
     [ -f "$PASSWALL_BIN_DIR" ] && rm -f "$PASSWALL_BIN_DIR" && success "Removed command: $PASSWALL_BIN_DIR"
-    info "Removing main script directory..."
-    [ -d "$PASSWALL_INSTALL_DIR" ] && rm -rf "$PASSWALL_INSTALL_DIR" && success "Removed directory: $PASSWALL_INSTALL_DIR"
+    # info "Removing main script directory..."
+    # [ -d "$PASSWALL_INSTALL_DIR" ] && rm -rf "$PASSWALL_INSTALL_DIR" && success "Removed directory: $PASSWALL_INSTALL_DIR"
 
     # Step 5: Update package lists
     info "Updating package lists..."
