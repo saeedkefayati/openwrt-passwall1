@@ -9,7 +9,10 @@
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 . "${SCRIPT_DIR}/config.cfg"
+
 . "${SCRIPT_DIR}/utils/common.sh"
+. "${SCRIPT_DIR}/utils/tool.sh"
+
 . "${SCRIPT_DIR}/modules/install.sh"
 . "${SCRIPT_DIR}/modules/update.sh"
 . "${SCRIPT_DIR}/modules/uninstall.sh"
@@ -31,6 +34,8 @@ get_openwrt_info
 while true; do
     clear_terminal
     show_banner
+    show_centered_text "Now you can use '${PASSWALL_COMMAND}' command"
+    show_separator
     show_openwrt_info
     show_core_status
 
