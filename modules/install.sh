@@ -15,46 +15,52 @@ install_passwall() {
     if ! opkg-key list | grep -q passwall; then
         wget -O /tmp/passwall.pub https://master.dl.sourceforge.net/project/openwrt-passwall-build/passwall.pub
         opkg-key add /tmp/passwall.pub
+        rm /tmp/passwall.pub
     else
         info "GPG key already exists, skipping."
     fi
 
     # Step 2: Detect release & architecture
     info "Detecting OpenWrt release and architecture..."
-    [ -f /etc/openwrt_release ] || error "/etc/openwrt_release not found!"
+    [ -f /etc/openwrt_release ] || { error "/etc/openwrt_release not found!"; return 1; }
     . /etc/openwrt_release
     RELEASE=${DISTRIB_RELEASE%.*}
     ARCH=$DISTRIB_ARCH
     info "Detected OpenWrt $RELEASE on $ARCH"
 
     # Step 3: Add Passwall repositories
+    info "Adding Passwall repositories..."
     FEEDS="passwall_packages passwall_luci"
     for feed in $FEEDS; do
         if grep -q "$feed" /etc/opkg/customfeeds.conf; then
             info "Feed $feed already exists, skipping."
         else
             echo "src/gz $feed https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$RELEASE/$ARCH/$feed" >> /etc/opkg/customfeeds.conf
-            info "Added feed $feed"
+            info "Added feed: $feed"
         fi
     done
 
     # Step 4: Update package lists
     info "Updating package lists..."
-    opkg update || error "Failed to update package lists"
+    opkg update || { error "Failed to update package lists"; return 1; }
 
     # Step 5: Install Passwall v1
     info "Installing Passwall v1..."
     if opkg list-installed | grep -q "$PASSWALL_PACKAGE"; then
         info "Passwall already installed, skipping."
     else
-        opkg install "$PASSWALL_PACKAGE" || error "Failed to install Passwall"
+        opkg install "$PASSWALL_PACKAGE" || { error "Failed to install Passwall"; return 1; }
     fi
 
     # Step 6: Enable and start service
-    info "Enabling and starting Passwall..."
+    info "Enabling Passwall service settings..."
     uci set passwall.@global[0].enabled='1'
     uci commit passwall
+    
+    info "Enabling service on boot..."
     passwall_service enable
+    
+    info "Restarting service to apply settings..."
     passwall_service restart
 
     success "Passwall v1 installation completed successfully!"
