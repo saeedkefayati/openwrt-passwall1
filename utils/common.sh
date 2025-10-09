@@ -28,7 +28,7 @@ error()   { printf "%b\n" "${RED}[ERROR]${NC} $1"; }
 
 
 #----------------------------------------
-# Check if dependecy exists
+# Check if dependency exists
 #----------------------------------------
 check_command() {
     cmd="$1"
@@ -77,6 +77,7 @@ show_openwrt_info() {
     echo ""
     printf "%-12s : %b\n" "RELEASE_TYPE" "$RELEASE_TYPE"
     printf "%-12s : %b\n" "RELEASE" "$RELEASE"
+    printf "%-12s : %b\n" "MAJOR" "$RELEASE_MAJOR"
     printf "%-12s : %b\n" "ARCH" "$ARCH"
     printf "%-12s : %b\n" "REVISION" "$REVISION"
     echo "-----------------------------------------------------"
@@ -144,6 +145,8 @@ get_openwrt_info() {
     REVISION=$(grep DISTRIB_REVISION /etc/openwrt_release | cut -d"'" -f2)
     ARCH=$(grep DISTRIB_ARCH /etc/openwrt_release | cut -d"'" -f2)
 
+    RELEASE_MAJOR=$(echo "$RELEASE" | cut -d'.' -f1,2)
+
     if [ -z "$RELEASE" ]; then
         RELEASE_TYPE="UNKNOWN"
     elif echo "$RELEASE" | grep -iq "snapshot"; then
@@ -156,7 +159,7 @@ get_openwrt_info() {
         RELEASE_TYPE="STABLE"
     fi
 
-    export RELEASE_TYPE RELEASE ARCH REVISION
+    export RELEASE_TYPE RELEASE RELEASE_MAJOR ARCH REVISION
 }
 
 
@@ -164,7 +167,7 @@ get_openwrt_info() {
 # Passwall Add Feeds
 # -------------------------------
 add_passwall_feeds() {
-    [ -z "$RELEASE" ] && { error "RELEASE not set! Run get_openwrt_info first."; return 1; }
+    [ -z "$RELEASE_MAJOR" ] && { error "RELEASE_MAJOR not set! Run get_openwrt_info first."; return 1; }
     [ -z "$ARCH" ] && { error "ARCH not set! Run get_openwrt_info first."; return 1; }
     [ -z "$RELEASE_TYPE" ] && { error "RELEASE_TYPE not set! Run get_openwrt_info first."; return 1; }
 
@@ -172,18 +175,18 @@ add_passwall_feeds() {
 
     case "$RELEASE_TYPE" in
         SNAPSHOT)
-            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/snapshots/packages-$RELEASE/$ARCH"
+            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/snapshots/packages-$RELEASE_MAJOR/$ARCH"
             ;;
         RC|BETA|STABLE)
-            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$RELEASE/$ARCH"
+            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$RELEASE_MAJOR/$ARCH"
             ;;
         *)
             warn "Unknown RELEASE_TYPE, defaulting to releases path"
-            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$RELEASE/$ARCH"
+            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$RELEASE_MAJOR/$ARCH"
             ;;
     esac
 
-    info "Adding Passwall repositories for $RELEASE_TYPE ($RELEASE/$ARCH)..."
+    info "Adding Passwall repositories for $RELEASE_TYPE ($RELEASE_MAJOR/$ARCH)..."
 
     for feed in $FEEDS; do
         if grep -q "$feed" /etc/opkg/customfeeds.conf 2>/dev/null; then
