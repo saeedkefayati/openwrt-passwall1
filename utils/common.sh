@@ -79,23 +79,14 @@ show_core_status() {
         name=$(echo "$value" | cut -d'|' -f1)
         path=$(echo "$value" | cut -d'|' -f2)
 
-        if [ -x "$path" ] || command -v "$path" >/dev/null 2>&1; then
-            if echo "$path" | grep -q "/init.d/"; then
-                if "$path" status >/dev/null 2>&1; then
-                    status="${GREEN}Running${NC}"
-                else
-                    status="${YELLOW}Stopped${NC}"
-                fi
-            else
-                base_proc=$(basename "$path")
-                if pgrep -x "$base_proc" >/dev/null 2>&1; then
-                    status="${GREEN}Running${NC}"
-                else
-                    status="${YELLOW}Stopped${NC}"
-                fi
-            fi
-        else
+        if [ ! -x "$path" ]; then
             status="${RED}Not Installed${NC}"
+        else
+            if ps -w | grep -v "grep" | grep -q -E "xray|sing-box|hysteria"; then
+                status="${GREEN}Running${NC}"
+            else
+                status="${YELLOW}Stopped${NC}"
+            fi
         fi
 
         printf "%-12s : %b\n" "$name" "$status"
