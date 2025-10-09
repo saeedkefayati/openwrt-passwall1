@@ -7,12 +7,8 @@
 uninstall_passwall() {
     # Step 1: Stopping Passwall service
     info "Stopping Passwall service..."
-    if [ -x "$PASSWALL_SERVICE_DIR" ]; then
-        "$PASSWALL_SERVICE_DIR" stop
-        success "Passwall service stopped."
-    else
-        warn "Passwall service not found!"
-    fi
+    passwall_service stop
+    success "Passwall service stopped."
 
     # Step 2: Removing Passwall packages
     info "Removing Passwall packages..."

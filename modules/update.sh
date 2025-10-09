@@ -5,15 +5,16 @@
 
 
 update_passwall() {
-    info "Updating Passwall v1..."
+    info "Updating Passwall v1 package..."
     opkg update
     if ! opkg install "$PASSWALL_PACKAGE"; then
         error "Update failed!"
         return 1
     fi
 
-    success "Restarting Passwall service..."
-    [ -x "$PASSWALL_SERVICE_DIR" ] && "$PASSWALL_SERVICE_DIR" restart
+    info "Updating Passwall v1 service..."
+    passwall_service restart
+    success "Passwall service restarted."
 
     success "Update completed successfully!"
     sleep 3

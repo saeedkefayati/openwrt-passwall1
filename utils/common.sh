@@ -103,3 +103,20 @@ show_core_status() {
 
     echo "-----------------------------------------------------"
 }
+
+
+# -------------------------------
+# Passwall Service Runner
+# -------------------------------
+passwall_service() {
+    action="$1" # 'start', 'stop', 'restart', etc.
+
+    if [ -x "$PASSWALL_SERVICE_DIR" ]; then
+        mkdir -p /tmp/etc/passwall
+
+        "$PASSWALL_SERVICE_DIR" "$action"
+        # success "Passwall service $action."
+    else
+        warn "Passwall service not found!"
+    fi
+}

@@ -6,12 +6,8 @@
 
 enable_passwall() {
     info "Enabling Passwall v1 service..."
-    if [ -x "$PASSWALL_SERVICE_DIR" ]; then
-        "$PASSWALL_SERVICE_DIR" enable
-        success "Passwall service enabled."
-    else
-        warn "Passwall service not found!"
-    fi
+    passwall_service enable
+    success "Passwall service enabled."
     sleep 3
 }
 
