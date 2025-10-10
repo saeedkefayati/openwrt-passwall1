@@ -3,7 +3,7 @@
 
 this is repository for all action in passwall1 service
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 ![GitHub last commit](https://img.shields.io/github/last-commit/saeedkefayati/openwrt-passwall1)
 ![GitHub top language](https://img.shields.io/github/languages/top/saeedkefayati/openwrt-passwall1)
 ![GitHub repo size](https://img.shields.io/github/repo-size/saeedkefayati/openwrt-passwall1)
