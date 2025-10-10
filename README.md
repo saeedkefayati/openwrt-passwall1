@@ -94,3 +94,13 @@ sh <(wget -qO- https://cdn.statically.io/gh/saeedkefayati/openwrt-passwall1/main
 ```bash
   echo '#!/bin/sh' > /usr/bin/passwall1 && echo 'cd /root/passwall1 && ./main.sh' >> /usr/bin/passwall1 && chmod +x /usr/bin/passwall1
 ```
+
+<br/>
+
+## Special Thanks  
+
+- [OpenWrt](https://github.com/openwrt)
+- [xiaorouji](https://github.com/xiaorouji/openwrt-passwall)
+- [moetayuko](https://github.com/moetayuko/openwrt-passwall-build)
+- [Ramtiiin](https://github.com/Ramtiiin)
+- [amirhosseinchoghaei](https://github.com/amirhosseinchoghaei)
