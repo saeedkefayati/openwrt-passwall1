@@ -42,7 +42,27 @@ install_passwall() {
         opkg install "$PASSWALL_PACKAGE" || { error "Failed to install Passwall"; return 1; }
     fi
 
-    # Step 6: Enable and start service
+    # Step 6: Install Package Dependency Based On OS Version
+    info "remove dnsmasq & install dnsmasq-full package"
+    opkg remove dnsmasq
+    opkg install dnsmasq-full
+
+
+    info "Detecting firewall type to select correct dependencies..."
+    if check_command "fw4"; then
+        info "Modern (fw4/nftables) system detected."
+        FIREWALL_DEPS="$MODERN_DEPS"
+    else
+        info "Legacy (fw3/iptables) system detected."
+        FIREWALL_DEPS="$LEGACY_DEPS"
+    fi
+
+    ALL_DEPS="$COMMON_DEPS $FIREWALL_DEPS"
+    opkg install $ALL_DEPS;
+    success "Install firewall type to select correct dependencies..."
+
+
+    # Step 7: Enable and start service
     info "Enabling Passwall service settings..."
     uci set passwall.@global[0].enabled='1'
     uci commit passwall
