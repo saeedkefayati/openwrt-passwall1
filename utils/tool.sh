@@ -135,7 +135,7 @@ add_passwall_feeds() {
 
     case "$RELEASE_TYPE" in
         SNAPSHOT)
-            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/snapshots/packages-$RELEASE_MAJOR/$ARCH"
+            BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/snapshots/packages/$ARCH"
             ;;
         RC|BETA|STABLE)
             BASE_URL="https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$RELEASE_MAJOR/$ARCH"
