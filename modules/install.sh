@@ -50,10 +50,12 @@ install_passwall() {
 
     info "Detecting firewall type to select correct dependencies..."
     if check_command "fw4"; then
-        info "Modern (fw4/nftables) system detected."
+        info "Modern (fw4/nftables) system detected. Setting backend to nftables."
+        uci set passwall.@global[0].firewall_backend='nftables'
         FIREWALL_DEPS="$MODERN_DEPS"
     else
-        info "Legacy (fw3/iptables) system detected."
+        info "Legacy (fw3/iptables) system detected. Setting backend to iptables."
+        uci set passwall.@global[0].firewall_backend='iptables'
         FIREWALL_DEPS="$LEGACY_DEPS"
     fi
 
