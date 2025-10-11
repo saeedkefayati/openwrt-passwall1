@@ -71,9 +71,13 @@ install_passwall() {
     
     info "Enabling service on boot..."
     passwall_service enable
-    
-    info "Restarting service to apply settings..."
-    passwall_service restart
+
+    info "Stopping service to apply new settings..."
+    passwall_service stop
+    sleep 2
+
+    info "Starting service with new settings..."
+    passwall_service start
 
     success "Passwall v1 installation completed successfully!"
     sleep 3
