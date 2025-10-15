@@ -149,10 +149,10 @@ add_passwall_feeds() {
     info "Adding Passwall repositories for $RELEASE_TYPE ($RELEASE_MAJOR/$ARCH)..."
 
     for feed in $FEEDS; do
-        if grep -q "$feed" /etc/opkg/customfeeds.conf 2>/dev/null; then
+        if grep -q "$feed" "$CUSTOM_FEEDS_FILE" 2>/dev/null; then
             info "Feed $feed already exists, skipping."
         else
-            echo "src/gz $feed $BASE_URL/$feed" >> /etc/opkg/customfeeds.conf
+            echo "src/gz $feed $BASE_URL/$feed" >> "$CUSTOM_FEEDS_FILE"
             success "Added feed: $feed"
         fi
     done
