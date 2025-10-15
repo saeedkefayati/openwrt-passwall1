@@ -40,13 +40,20 @@ while true; do
     show_core_status
 
     echo "Select an operation for Passwall v1:"
-    i=1
-    while true; do
-        eval entry=\$MENU_${i}
-        [ -z "$entry" ] && break
-        menu_text=$(echo "$entry" | cut -d'|' -f1)
-        echo "${i}) $menu_text"
-        i=$((i+1))
+    
+    menu_items=$(grep '^MENU_' "${SCRIPT_DIR}/config.cfg" | grep -v '^MENU_0')
+    exit_item=$(grep '^MENU_0' "${SCRIPT_DIR}/config.cfg")
+
+    all_items=$(printf "%s\n%s" "$menu_items" "$exit_item")
+
+    echo "$all_items" | while IFS= read -r line; do
+        if [ -n "$line" ]; then
+            # Extract the number
+            num=$(echo "$line" | cut -d'=' -f1 | cut -d'_' -f2)
+            # Extract the menu text
+            text=$(echo "$line" | cut -d'=' -f2 | tr -d '"' | cut -d'|' -f1)
+            echo "${num}) $text"
+        fi
     done
 
     printf "Your choice: "
